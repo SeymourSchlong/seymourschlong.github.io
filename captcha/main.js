@@ -6,7 +6,7 @@ let cardValues = new Array(48);
 for (let i = 0; i < cardValues.length; i++) cardValues[i] = 0;
 
 function resetValues() {
-    document.getElementById('decimal').textContent = 'abcdefgh';
+    //document.getElementById('decimal').textContent = 'abcdefgh';
 
     //document.getElementById('binary').textContent = `0000${'\n0000'.repeat(11)}`;
 }
