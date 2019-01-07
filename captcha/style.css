@@ -1,0 +1,20 @@
+body {
+    background-color: #464646;
+}
+
+table {
+    margin: auto;
+}
+
+td {
+    border: 1px solid black;
+}
+
+#canvas-container {
+    width: 100%;
+    text-align:center;
+}
+
+.submit {
+    display: block;
+}

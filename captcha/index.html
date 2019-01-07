@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Canvas Testing</title>
+        <link rel="stylesheet" href="style.css">
+        <script type="text/javascript" src="main.js"></script>
+    </head>
+    <body onload="draw(); resetValues();">
+        <table>
+            <tbody>
+                <tr>
+                    <td colspan="4">
+                        <div id="canvas-container"><canvas id="card" width="148" height="188">Your browser does not support the HTML5 canvas tag.</canvas></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <textarea name="decimal" type="text" maxlength="8" id="decimal" placeholder="CAPTCHA" value="abcdefgh" rows="1" cols="8" style="resize: none;"></textarea>
+                    </td>
+                    <td>
+                        <input class="submit" onclick="getDecimalCode();" name="submit" type="button" id="submitDecimal" value="Convert CAPTCHA code"/>
+                        <input class="submit" onclick="copyBinary();" name="submit" type="button" id="copyBinary" value="Copy Binary"/>
+                    </td>
+                    <td>
+                        <textarea readonly="true" name="binary" type="text" maxlength="59" id="binary" placeholder="Binary" value="" rows="12" style="resize: none;"></textarea>
+                    </td>
+                    <td>
+                        <input class="submit" onclick="getBinaryCode();" name="submit" type="button" id="submitBinary" value="Convert binary code"/>
+                        <input class="submit" onclick="copyDecimal();" name="submit" type="button" id="copyDecimal" value="Copy CAPTCHA code"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </body>
+</html>
