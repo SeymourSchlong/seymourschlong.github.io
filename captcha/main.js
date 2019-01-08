@@ -1,18 +1,21 @@
+/* ~~~ CAPTCHA CARD CREATOR BY seymour schlong#3669 */
+
 'use strict';
 
 let xPos = 7;
 let yPos = 7;
 
-let holesVisible = false;
+let holesVisible = true;
 
 const captchaValues = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '?', '!'];
 let cardValues = new Array(48);
 
 for (let i = 0; i < cardValues.length; i++) cardValues[i] = 0;
 
-function resetValues() {
-    updateValue('captcha-code', '00000000');
-}
+// Initialize up here to remove flickering.
+const img = new Image();
+img.src = './images/captchacard.png';
+img.onload = () => draw();
 
 function updateValue(id, value) {
     document.getElementById(id).value = value;
@@ -44,14 +47,14 @@ function initialize() {
         document.getElementById('card-container').appendChild(newDiv);
     }
 
-    resetValues();
+    updateValue('captcha-code', '00000000');
     draw();
 }
 
 function toggleVisibility() {
-    holesVisible = !holesVisible;
-
     console.log(`Hole visibility is turned ${holesVisible ? 'on' : 'off'}.`);
+
+    holesVisible = !holesVisible;
 
     draw();
 }
@@ -146,19 +149,18 @@ function draw() {
     if (canvas.getContext) {
         const ctx = canvas.getContext('2d');
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);  // .clearRect(x, y, w, h); -- Clears a rectangle
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Draw the captcha card image.
-        const img = new Image();
+        if (!holesVisible) {
+            ctx.fillStyle = 'black';
 
-        img.src = './images/captchacard.png';
-
-        img.onload = () => {
-            ctx.drawImage(img, 0, 0);
-            ctx.imageSmoothingEnabled = false;
-
-            if (!holesVisible) fillRects(ctx);
+            ctx.fillRect(21, 38, 76, 115);
         }
+
+        if (!holesVisible) fillRects(ctx);
+        // Draw the captcha card image.
+        ctx.drawImage(img, 0, 0);
 
         if (holesVisible) fillRects(ctx);
     }
@@ -179,9 +181,9 @@ function fillRects(canvas) {
         y = 38 + (rowNum * 10);
 
         if (cardValues[i] == '0') {
-            ctx.fillStyle = '#ffffff';      // .fillStyle = ''; -- Changes the colour. You can use (a)rgb, hex, or colour names
+            ctx.fillStyle = 'white';
 
-            ctx.fillRect(x, y, 16, 5); // .fillRect(x, y, w, h); -- Fills a rectange with a previously defined colour
-        }/**/
+            ctx.fillRect(x, y, 16, 5);
+        }
     }
 }
