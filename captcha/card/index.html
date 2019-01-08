@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+		<link rel="icon" type="image/png" href="https://seymourschlong.github.io/images/captcha_ico.png">
+        <title>Captcha Card Creator</title>
+        <link rel="stylesheet" href="style.css">
+        <script type="text/javascript" src="main.js"></script>
+    </head>
+    <body onload="initialize();">
+        <nav>
+            <div id="main-bar">
+                <a href="https://seymourschlong.github.io/" style="color: white;" draggable="false">HOME</a>
+                <span class="splitter">|</span>
+                <a href="https://seymourschlong.github.io/captcha/" style="color: #f0789e" draggable="false">CAPTCHA HOME</a>
+                <span class="splitter">|</span>
+                <a href="https://github.com/SeymourSchlong" style="color: #0791d8" draggable="false">GITHUB</a>
+            </div>
+        </nav>
+        <table>
+            <tbody>
+                <tr>
+                    <th colspan="2">CAPTCHA Card Creator</th>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="width: 160px !important">
+                        <div id="card-container">
+                            <div id="canvas-container">
+                                <canvas id="card" width="148" height="188">
+                                    Sorry, but your browser does not support the HTML5 canvas tag!
+                                </canvas>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="captcha-code" type="text" maxlength="8" id="captcha-code" placeholder="CAPTCHA" value="abcdefgh" rows="1" cols="8" style="resize: none;"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="submit" onclick="convertCaptcha();" name="submit" type="button" id="submit-code" value="Convert CAPTCHA code"/>
+                        <br/>
+                        <input class="submit" onclick="toggleVisibility();" name="hole-toggle" type="button" id="toggle-holes" value="Toggle hole visibility"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
