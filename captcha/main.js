@@ -6,9 +6,64 @@ let cardValues = new Array(48);
 for (let i = 0; i < cardValues.length; i++) cardValues[i] = 0;
 
 function resetValues() {
-    //document.getElementById('decimal').textContent = 'abcdefgh';
+    updateValue('decimal', '00000000');
+    //updateValue('binary', `0000${'\n0000'.repeat(11)}`);
+}
 
-    //document.getElementById('binary').textContent = `0000${'\n0000'.repeat(11)}`;
+function updateValue(id, value) {
+    document.getElementById(id).value = value;
+}
+
+function initialize() {
+    let column = -1;
+    let row = 0;
+
+    for (let i = 0; i < 48; i++) {
+        row = (i % 12);
+        if (i % 12 == 0) column++;
+
+        let x = (column * 20);
+        let y = (row * 10);
+
+        let newDiv = document.createElement('div');
+        newDiv.className = 'card-hole slot-' + i;
+        newDiv.onclick = () => reactPressed(i);
+        newDiv.style.marginLeft = `${269 + x}px`;
+        newDiv.style.marginTop = `${36 + y}px`;
+        newDiv.style.width = '20px';
+        newDiv.style.height = '10px';
+        document.getElementById('card-container').appendChild(newDiv);
+    }
+
+    resetValues();
+    draw();
+}
+
+function reactPressed(a) {
+    if (cardValues[a] == 0) cardValues[a] = 1;
+    else cardValues[a] = 0;
+
+    // Create the new CAPTCHA code...
+    let binaryString = cardValues.join('');
+    let binaryCharacters = binaryString.match(new RegExp('.{1,' + 6 + '}', 'g'));
+    let newCaptchaArray = [];
+
+    for (let i = 0; i < binaryCharacters.length; i++) {
+        let char = binaryCharacters[i].split('').reverse();
+        let finalNum = 0;
+
+        for (let j = 0; j < char.length; j++) {
+            char[j] *= Math.pow(2, j);
+            finalNum += char[j];
+        }
+        newCaptchaArray.push(captchaValues[finalNum]);
+    }
+
+    updateValue('decimal', newCaptchaArray.join(''));
+
+    // Update the binary code!!!!
+
+    draw();
 }
 
 function getBinary(a) {
@@ -42,7 +97,7 @@ function getDecimalCode() {
     text = text.replace(/\s/g, '');
 
     if (text.length != 8) {
-        alert(`Your captcha code is too ${8 - text.length > 0 ? 'short!\
+        alert(`Your CAPTCHA code is too ${8 - text.length > 0 ? 'short!\
         \nMake it longer by' : 'long! Make it shorter by'} ${Math.abs(8 - text.length)} character${Math.abs(8-text.length) === 1 ? '' : 's'}.`);
         return;
     }
@@ -192,7 +247,7 @@ function draw() {
     if (canvas.getContext) {
         const ctx = canvas.getContext('2d');
 
-        ctx.clearRect(0, 0, 148, 188);  // .clearRect(x, y, w, h); -- Clears a rectangle
+        ctx.clearRect(0, 0, canvas.width, canvas.height);  // .clearRect(x, y, w, h); -- Clears a rectangle
 
         // Draw the captcha card image.
         const img = new Image();

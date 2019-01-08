@@ -6,12 +6,18 @@
         <link rel="stylesheet" href="style.css">
         <script type="text/javascript" src="main.js"></script>
     </head>
-    <body onload="draw(); resetValues();">
+    <body onload="initialize();">
         <table>
             <tbody>
                 <tr>
                     <td colspan="4">
-                        <div id="canvas-container"><canvas id="card" width="148" height="188">Your browser does not support the HTML5 canvas tag.</canvas></div>
+                        <div id="card-container">
+                            <div id="canvas-container">
+                                <canvas id="card" width="148" height="188">
+                                    Your browser does not support the HTML5 canvas tag.
+                                </canvas>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -26,6 +32,8 @@
                         <textarea readonly="true" name="binary" type="text" maxlength="59" id="binary" placeholder="Binary" value="" rows="12" style="resize: none;"></textarea>
                     </td>
                     <td>
+                            <!--<div class="card-hole slot-0" onclick="reactPressed(0);"></div>
+                            <div class="card-hole slot-1" onclick="reactPressed(1);"></div>-->
                         <input class="submit" onclick="getBinaryCode();" name="submit" type="button" id="submitBinary" value="Convert binary code"/>
                         <input class="submit" onclick="copyDecimal();" name="submit" type="button" id="copyDecimal" value="Copy CAPTCHA code"/>
                     </td>

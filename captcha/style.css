@@ -1,20 +1,55 @@
 body {
-    background-color: #464646;
+    background-color: #535353;
+	font-family: "courier", "monospace";
 }
 
 table {
+    border: 5px solid #c6c6c6;
+    background-color: #c6c6c6;
+    width: 500px;
     margin: auto;
 }
 
+tbody {
+    border: 5px solid #c6c6c6;
+}
+
 td {
-    border: 1px solid black;
+    background-color: #eeeeee;
+}
+
+#card-container {
+    width: 100%;
+    height: 200px;
+    text-align: center;
+    margin: auto;
 }
 
 #canvas-container {
-    width: 100%;
-    text-align:center;
+    margin-left: 250px;
+    position: absolute;
 }
 
 .submit {
+	font-size: 15px !important;
     display: block;
+	padding: 8px 12px;
+	outline: none;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 0;
+	border-color: #dddddd #898989 #898989 #dddddd;
+	background-color: #eeeeee;
+}
+
+.submit:active {
+	border-color: #898989 #dddddd #dddddd #898989;
+}
+
+.card-hole {
+    position: absolute;
+    margin: auto;
+    /*background-color: #1d00ff4f;*/
+    width: 16px;
+    height: 5px;
 }
