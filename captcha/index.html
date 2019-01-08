@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" type="image/png" href="/images/captchacard.png">
+		<link rel="icon" type="image/png" href="./images/ico.png">
         <title>Captcha Card Creator</title>
         <link rel="stylesheet" href="style.css">
         <script type="text/javascript" src="main.js"></script>
@@ -11,7 +11,10 @@
         <table>
             <tbody>
                 <tr>
-                    <td colspan="4">
+                    <th colspan="2">CAPTCHA Card Creator</th>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="width: 160px !important">
                         <div id="card-container">
                             <div id="canvas-container">
                                 <canvas id="card" width="148" height="188">
@@ -20,23 +23,15 @@
                             </div>
                         </div>
                     </td>
+                    <td>
+                        <textarea name="captcha-code" type="text" maxlength="8" id="captcha-code" placeholder="CAPTCHA" value="abcdefgh" rows="1" cols="8" style="resize: none;"></textarea>
+                    </td>
                 </tr>
                 <tr>
                     <td>
-                        <textarea name="decimal" type="text" maxlength="8" id="decimal" placeholder="CAPTCHA" value="abcdefgh" rows="1" cols="8" style="resize: none;"></textarea>
-                    </td>
-                    <td>
-                        <input class="submit" onclick="getDecimalCode();" name="submit" type="button" id="submitDecimal" value="Convert CAPTCHA code"/>
-                        <input class="submit" onclick="copyBinary();" name="submit" type="button" id="copyBinary" value="Copy Binary"/>
-                    </td>
-                    <td>
-                        <textarea readonly="true" name="binary" type="text" maxlength="59" id="binary" placeholder="Binary" value="" rows="12" style="resize: none;"></textarea>
-                    </td>
-                    <td>
-                            <!--<div class="card-hole slot-0" onclick="reactPressed(0);"></div>
-                            <div class="card-hole slot-1" onclick="reactPressed(1);"></div>-->
-                        <input class="submit" onclick="getBinaryCode();" name="submit" type="button" id="submitBinary" value="Convert binary code"/>
-                        <input class="submit" onclick="copyDecimal();" name="submit" type="button" id="copyDecimal" value="Copy CAPTCHA code"/>
+                        <input class="submit" onclick="convertCaptcha();" name="submit" type="button" id="submit-code" value="Convert CAPTCHA code"/>
+                        <br/>
+                        <input class="submit" onclick="toggleVisibility();" name="hole-toggle" type="button" id="toggle-holes" value="Toggle hole visibility"/>
                     </td>
                 </tr>
             </tbody>
