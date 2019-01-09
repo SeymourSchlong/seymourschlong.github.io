@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+		<link rel="icon" type="image/png" href="https://seymourschlong.github.io/images/captcha_ico.png">
+        <title>Captcha Card Calculator</title>
+        <link rel="stylesheet" href="style.css">
+        <script type="text/javascript" src="main.js"></script>
+    </head>
+    <body onload="initialize();">
+        <nav>
+            <div id="main-bar">
+                <a href="https://seymourschlong.github.io/" style="color: white;" draggable="false">HOME</a>
+                <span class="splitter">|</span>
+                <a href="https://seymourschlong.github.io/captcha/" style="color: #f0789e" draggable="false">CAPTCHA HOME</a>
+                <span class="splitter">|</span>
+                <a href="https://github.com/SeymourSchlong" style="color: #0791d8" draggable="false">GITHUB</a>
+            </div>
+        </nav>
+        <table>
+            <tbody>
+                <tr>
+                    <th colspan="5">CAPTCHA Card Calculator</th>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="width: 160px !important">
+                        <!-- first card -->
+                        <div class="card-container card-0">
+                            <div class="canvas-container">
+                                <canvas id="canvas-0" class="card card-0" width="148" height="188">
+                                    Sorry, but your browser does not support the HTML5 canvas tag!
+                                </canvas>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <!-- && button-->
+                        <input class="submit operand" onclick="setOperand('and');" name="submit" type="button" id="submit-and" value="&&"/>
+                    </td>
+                    <td rowspan="2" style="width: 160px !important">
+                        <!-- second card -->
+                        <div class="card-container card-1">
+                            <div class="canvas-container">
+                                <canvas id="canvas-1" class="card card-1" width="148" height="188">
+                                    Sorry, but your browser does not support the HTML5 canvas tag!
+                                </canvas>
+                            </div>
+                        </div>
+                    </td>
+                    <td rowspan="2">
+                        <!-- = button -->
+                        <input class="submit operand" onclick="calculate();" name="submit" type="button" id="submit-equals" value="="/>
+                    </td>
+                    <td rowspan="2" style="width: 160px !important">
+                            <!-- third card -->
+                            <div class="card-container card-2">
+                                <div class="canvas-container">
+                                    <canvas id="canvas-2" class="card card-2" width="148" height="188">
+                                        Sorry, but your browser does not support the HTML5 canvas tag!
+                                    </canvas>
+                                </div>
+                            </div>
+                        </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- || button -->
+                        <input class="submit operand" onclick="setOperand('or');" name="submit" type="button" id="submit-or" value="||"/>
+                    </td>
+                </tr>
+                <tr id="cardinfo">
+                    <td colspan="2">
+                        <textarea name="captcha-code" type="text" maxlength="8" id="captcha-0" class="captcha-code card-0" placeholder="CAPTCHA" rows="1" cols="8" style="resize: none;"></textarea>
+                        <br>
+                        <input class="submit" onclick="convertCaptcha(0);" name="submit" type="button" id="submit-card1" value="Convert"/>
+                    </td>
+                    <td colspan="2">
+                        <textarea name="captcha-code" type="text" maxlength="8" id="captcha-1" class="captcha-code card-1" placeholder="CAPTCHA" rows="1" cols="8" style="resize: none;"></textarea>
+                        <br>
+                        <input class="submit" onclick="convertCaptcha(1);" name="submit" type="button" id="submit-card1" value="Convert"/>
+                    </td>
+                    <td>
+                        <textarea name="captcha-code" type="text" maxlength="8" id="captcha-2" class="captcha-code card-2" placeholder="CAPTCHA" rows="1" cols="8" style="resize: none;" readonly></textarea>
+                        <br>
+                        <input class="submit" onclick="toggleVisibility();" name="hole-toggle" type="button" id="toggle-holes" value="Toggle Holes"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
