@@ -5,7 +5,7 @@
 let xPos = 7;
 let yPos = 7;
 
-let type = 'and';
+let type;
 
 let holesVisible = true;
 
@@ -33,9 +33,17 @@ function setOperand(a) {
         type = a;
         console.log('Calculator set to ' + a + '!');
     }
+
+    document.getElementById('submit-and').disabled = type == 'and';
+    document.getElementById('submit-or').disabled = type == 'or';
 }
 
 function calculate() {
+    if (type == undefined) {
+        alert('Please choose a calculation type!');
+        return;
+    }
+
     if (type == 'and') {
         for (let i = 0; i < 48; i++) {
             if (cards[0][i] == '1' && cards[1][i] == '1')

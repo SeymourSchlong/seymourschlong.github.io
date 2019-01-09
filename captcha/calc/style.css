@@ -94,8 +94,10 @@ textarea, input {
 	background-color: #eeeeee;
 }
 
-.submit:active {
-	border-color: #898989 #dddddd #dddddd #898989;
+.submit:active, input:disabled {
+    border-color: #898989 #dddddd #dddddd #898989;
+    color: #131313;
+    background-color: #cccccc;
 }
 
 .card-hole {
