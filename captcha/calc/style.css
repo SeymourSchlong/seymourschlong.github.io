@@ -108,7 +108,7 @@ textarea, input {
     height: 10px;
 }
 
-.operand {
+.operation {
     font-size: 25px !important;/**/
     padding: 4px 10px;
 }

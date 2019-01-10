@@ -23,8 +23,8 @@
                     <th colspan="5">CAPTCHA Card Calculator</th>
                 </tr>
                 <tr>
-                    <td rowspan="2" style="width: 160px !important">
-                        <!-- first card -->
+                    <!-- Card one -->
+                    <td rowspan="1" style="width: 160px !important">
                         <div class="card-container card-0">
                             <div class="canvas-container">
                                 <canvas id="canvas-0" class="card card-0" width="148" height="188">
@@ -33,12 +33,15 @@
                             </div>
                         </div>
                     </td>
-                    <td>
-                        <!-- && button-->
-                        <input class="submit operand" onclick="setOperand('and');" name="submit" type="button" id="submit-and" value="&&"/>
+                    <td id="operations">
+                        <!-- && button -->
+                        <input class="submit operation" onclick="setOperation('and');" name="submit" type="button" id="submit-and" value="&&"/>
+                        <br>
+                        <!-- || button -->
+                        <input class="submit operation" onclick="setOperation('or');" name="submit" type="button" id="submit-or" value="||"/>
                     </td>
-                    <td rowspan="2" style="width: 160px !important">
-                        <!-- second card -->
+                    <!-- Card two -->
+                    <td rowspan="1" style="width: 160px !important">
                         <div class="card-container card-1">
                             <div class="canvas-container">
                                 <canvas id="canvas-1" class="card card-1" width="148" height="188">
@@ -47,25 +50,19 @@
                             </div>
                         </div>
                     </td>
-                    <td rowspan="2">
+                    <td rowspan="1">
                         <!-- = button -->
-                        <input class="submit operand" onclick="calculate();" name="submit" type="button" id="submit-equals" value="="/>
+                        <input class="submit operation" onclick="calculate();" name="submit" type="button" id="submit-equals" value="="/>
                     </td>
-                    <td rowspan="2" style="width: 160px !important">
-                            <!-- third card -->
-                            <div class="card-container card-2">
-                                <div class="canvas-container">
-                                    <canvas id="canvas-2" class="card card-2" width="148" height="188">
-                                        Sorry, but your browser does not support the HTML5 canvas tag!
-                                    </canvas>
-                                </div>
+                    <!-- Card three (end result) -->
+                    <td rowspan="1" style="width: 160px !important">
+                        <div class="card-container card-2">
+                            <div class="canvas-container">
+                                <canvas id="canvas-2" class="card card-2" width="148" height="188">
+                                    Sorry, but your browser does not support the HTML5 canvas tag!
+                                </canvas>
                             </div>
-                        </td>
-                </tr>
-                <tr>
-                    <td>
-                        <!-- || button -->
-                        <input class="submit operand" onclick="setOperand('or');" name="submit" type="button" id="submit-or" value="||"/>
+                        </div>
                     </td>
                 </tr>
                 <tr id="cardinfo">
