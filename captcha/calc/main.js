@@ -229,7 +229,6 @@ const convertCaptcha = (card) => {
 }
 
 const initialize = () => {
-    enableXOR();
     let column = -1;
     let row = 0;
 
