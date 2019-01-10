@@ -1,4 +1,4 @@
-/* ~~~ CAPTCHA CARD CREATOR BY seymour schlong#3669 ~~ */
+/* ~~ CAPTCHA CARD CREATOR BY seymour schlong#3669 ~~ */
 
 'use strict';
 
