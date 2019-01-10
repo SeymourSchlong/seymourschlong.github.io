@@ -1,9 +1,6 @@
-/* ~~ CAPTCHA CARD CREATOR BY seymour schlong#3669 ~~ */
+/* ~~ CAPTCHA CARD CALCULATOR BY seymour schlong#3669 ~~ */
 
 'use strict';
-
-let xPos = 7;
-let yPos = 7;
 
 let type;
 
@@ -99,7 +96,7 @@ const fillRects = (canvas, card) => {
 
 const draw = () => {
     for (let i = 0; i < cards.length; i++) {
-        const canvas = document.getElementById('canvas-' + i);
+        const canvas = document.getElementById(`canvas-${i}`);
 
         if (canvas.getContext) {
             const ctx = canvas.getContext('2d');
@@ -183,13 +180,13 @@ const reactPressed = (card, a) => {
         newCaptchaArray.push(captchaValues[finalNum]);
     }
 
-    updateValue('captcha-' + card, newCaptchaArray.join(''));
+    updateValue(`captcha-${card}`, newCaptchaArray.join(''));
 
     draw();
 }
 
 const convertCaptcha = (card) => {
-    let text = document.getElementById('captcha-' + card).value;
+    let text = document.getElementById(`captcha-${card}`).value;
 
     // Remove any spaces or linebreaks
     text = text.replace(/\s/g, '');
@@ -200,22 +197,21 @@ const convertCaptcha = (card) => {
 
         text += '0'.repeat(difference);
 
-        updateValue('captcha-' + card, text);
+        updateValue(`captcha-${card}`, text);
     }
 
     cards[card] = [];
 
     let charArray = text.split('');
-    let regex = /[a-z0-9!?]/i;
     for (const char of charArray) {
-        if (regex.test(char)) {
+        if (captchaValues.includes(char)) {
             let binaryNumber = getBinary(char);
 
             for (let i = 0; i < 6; i++) {
                 cards[card].push(binaryNumber[i]);
             }
         } else {
-            alert('Invalid character: ' + char);
+            alert(`Invalid character: ${char}`);
             return;
         }
     }
@@ -238,27 +234,21 @@ const initialize = () => {
         let x = (column * 20);
         let y = (row * 10);
 
+        // First card's punch holes
         let newDiv1 = document.createElement('div');
         newDiv1.className = `card-hole card-punch-${i} slot-${i}`;
         newDiv1.onclick = () => reactPressed(0, i);
-        newDiv1.style.marginLeft = `${xPos + 19 + x}px`;
-        newDiv1.style.marginTop = `${yPos + 36 + y}px`;
+        newDiv1.style.marginLeft = `${x + 26}px`;
+        newDiv1.style.marginTop = `${y + 43}px`;
         newDiv1.draggable = false;
         document.getElementsByClassName('card-container')[0].appendChild(newDiv1);
-    }
-
-    for (let i = 0; i < 48; i++) {
-        row = (i % 12);
-        if (row === 0) column++;
-
-        let x = (column * 20);
-        let y = (row * 10);
-
+        
+        // Second card's punch holes
         let newDiv2 = document.createElement('div');
         newDiv2.className = `card-hole card-punch-${i} slot-${i}`;
         newDiv2.onclick = () => reactPressed(1, i);
-        newDiv2.style.marginLeft = `${xPos + 19 + x - 80}px`;
-        newDiv2.style.marginTop = `${yPos + 36 + y}px`;
+        newDiv2.style.marginLeft = `${x + 26}px`;
+        newDiv2.style.marginTop = `${y + 43}px`;
         newDiv2.draggable = false;
         document.getElementsByClassName('card-container')[1].appendChild(newDiv2);
     }
