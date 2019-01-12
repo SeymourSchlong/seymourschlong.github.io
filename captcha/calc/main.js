@@ -6,9 +6,12 @@ let type;
 
 let xorVisible = false;
 let holesVisible = true;
+let mouseIsDragging = false;
+
 
 const captchaValues = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz?!';
 const cards = [...new Array(3)].map(() => new Array(48).fill(0));
+const isEdited = [...new Array(2)].map(() => new Array(48).fill(false));
 
 // Initialize up here to remove flickering.
 const img = new Image();
@@ -120,7 +123,7 @@ const draw = () => {
 }
 
 const calculate = () => {
-    if (type === undefined) {
+    if (!type) {
         alert('Please choose a calculation type!');
         return;
     }
@@ -160,27 +163,42 @@ const toggleVisibility = () => {
     draw();
 }
 
-const reactPressed = (card, a) => {
-    if (cards[card][a] === 0) cards[card][a] = 1;
-    else cards[card][a] = 0;
-
-    // Create the new CAPTCHA code...
-    let binaryString = cards[card].join('');
-    let binaryCharacters = binaryString.match(new RegExp(/.{1,6}/g));
-    let newCaptchaArray = [];
-
-    for (let i = 0; i < binaryCharacters.length; i++) {
-        let char = binaryCharacters[i].split('').reverse();
-        let finalNum = 0;
-
-        for (let j = 0; j < char.length; j++) {
-            char[j] *= Math.pow(2, j);
-            finalNum += char[j];
-        }
-        newCaptchaArray.push(captchaValues[finalNum]);
+const reactReleased = () => {
+    mouseIsDragging = false;
+    for (let i = 0; i < 2; i++) {
+        isEdited[i].fill(false);
     }
+}
 
-    updateValue(`captcha-${card}`, newCaptchaArray.join(''));
+const reactPressed = (card, a, isDragging) => {
+    mouseIsDragging = isDragging;
+
+    if (!mouseIsDragging || !isEdited[card][a]) {
+        isEdited[card][a] = true;
+
+        if (cards[card][a] === 0) cards[card][a] = 1;
+        else cards[card][a] = 0;
+
+        // Create the new CAPTCHA code...
+        let binaryString = cards[card].join('');
+        let binaryCharacters = binaryString.match(new RegExp(/.{1,6}/g));
+        let newCaptchaArray = '';
+
+        for (let i = 0; i < binaryCharacters.length; i++) {
+            let char = binaryCharacters[i].split('').reverse();
+            let finalNum = 0;
+
+            for (let j = 0; j < char.length; j++) {
+                char[j] *= Math.pow(2, j);
+                finalNum += char[j];
+            }
+            newCaptchaArray += captchaValues[finalNum];
+        }
+
+        if (!xorVisible && newCaptchaArray.toLowerCase().includes('xyzzy')) enableXOR();
+
+        updateValue(`captcha-${card}`, newCaptchaArray);
+    }
 
     draw();
 }
@@ -237,7 +255,10 @@ const initialize = () => {
         // First card's punch holes
         let newDiv1 = document.createElement('div');
         newDiv1.className = `card-hole card-punch-${i} slot-${i}`;
-        newDiv1.onclick = () => reactPressed(0, i);
+        newDiv1.ondragstart = () => reactPressed(0, i, true);
+        newDiv1.ondragover = () => reactPressed(0, i, true);
+        newDiv1.ondragend = () => reactReleased();
+        newDiv1.onclick = () => reactPressed(0, i, false);
         newDiv1.style.marginLeft = `${x + 26}px`;
         newDiv1.style.marginTop = `${y + 43}px`;
         newDiv1.draggable = false;
@@ -246,7 +267,9 @@ const initialize = () => {
         // Second card's punch holes
         let newDiv2 = document.createElement('div');
         newDiv2.className = `card-hole card-punch-${i} slot-${i}`;
-        newDiv2.onclick = () => reactPressed(1, i);
+        newDiv2.ondragover = () => reactPressed(1, i, true);
+        newDiv2.ondragend = () => reactReleased();
+        newDiv2.onclick = () => reactPressed(1, i, false);
         newDiv2.style.marginLeft = `${x + 26}px`;
         newDiv2.style.marginTop = `${y + 43}px`;
         newDiv2.draggable = false;
@@ -255,6 +278,14 @@ const initialize = () => {
 
     draw();
 }
+
+/*
+let cardHole = document.getElementsByClassName('card-hole')[0];
+
+if (cardHole) cardHole.addEventListener("click", () => {
+    // code that runs when you click `cardHole`
+    console.log('click!');
+});//*/
 
 // Suck my fucking DICK, Leo!!!!
 // zFVytxR2 ^^ TzdhVEyr

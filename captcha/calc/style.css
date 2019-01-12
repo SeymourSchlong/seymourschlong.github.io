@@ -106,6 +106,7 @@ textarea, input {
     /*background-color: #1d00ff4f;/**/
     width: 20px;
     height: 10px;
+    cursor: pointer !important;
 }
 
 .operation {
