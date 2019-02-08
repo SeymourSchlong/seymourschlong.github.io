@@ -37,9 +37,20 @@ a:hover {
 table {
     border: 5px solid #c6c6c6;
     background-color: #c6c6c6;
-    width: 500px;
-    margin-top: 30px !important;
+    width: 650px;
     margin: auto;
+}
+
+#profile {
+    margin-top: 30px !important;
+}
+
+#projects {
+    width: 650;
+}
+
+.project-title {
+    height: 40px;
 }
 
 tbody {
@@ -49,6 +60,9 @@ tbody {
 th {
     padding: 10px;
     font-size: 30px;
+}
+th a {
+    font-size: 25px;
 }
 
 tr {
@@ -61,4 +75,14 @@ td {
 
 td a {
     font-weight: bold;
+}
+
+#profile img {
+    height: 128px;
+    width: 128px;
+}
+
+#projects img {
+    max-height: 128px;
+    max-width: 128px;
 }
