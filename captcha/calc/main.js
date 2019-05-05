@@ -128,9 +128,7 @@ const calculate = () => {
         return;
     }
 
-    cards[2] = type === 'or'
-    ? cards[2].map((item, i) => cards[0][i] === 1 || cards[1][i] === 1 ? 1 : 0)
-    : cards[2].map((item, i) => cards[0][i] === 1 && cards[1][i] === 1 ? (type === 'and' ? 1 : 0) : (type === 'and' ? 0 : 1));
+    cards[2] = cards[2].map(type === 'or' ? (item, i) => cards[0][i] | cards[1][i] : (type === 'and' ? (item, i) => cards[0][i] & cards[1][i] : (item, i) => cards[0][i] ^ cards[1][i]));
 
     // Create the new CAPTCHA code...
     let binaryString = cards[2].join('');
@@ -275,17 +273,20 @@ const initialize = () => {
         newDiv2.draggable = false;
         document.getElementsByClassName('card-container')[1].appendChild(newDiv2);
     }
+    
+    for (let i = 0; i < 2; i++) {
+        document.querySelector(`#captcha-${i}`).addEventListener('keydown', evt => {
+            if (evt.keyCode === 13) {
+                evt.preventDefault();
+                convertCaptcha(i);
+            } else if (evt.keyCode === 32) {
+                evt.preventDefault();
+            }
+        });
+    }
 
     draw();
 }
-
-/*
-let cardHole = document.getElementsByClassName('card-hole')[0];
-
-if (cardHole) cardHole.addEventListener("click", () => {
-    // code that runs when you click `cardHole`
-    console.log('click!');
-});//*/
 
 // Suck my fucking DICK, Leo!!!!
 // zFVytxR2 ^^ TzdhVEyr
