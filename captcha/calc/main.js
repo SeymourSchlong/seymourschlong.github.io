@@ -4,7 +4,7 @@
 
 let type;
 
-let xorVisible = false;
+//let xorVisible = false;
 let holesVisible = true;
 let mouseIsDragging = false;
 
@@ -30,7 +30,8 @@ const setOperation = (a) => {
 
     document.getElementById('submit-and').disabled = type === 'and';
     document.getElementById('submit-or').disabled = type === 'or';
-    if (xorVisible) document.getElementById('submit-xor').disabled = type === 'xor';
+    document.getElementById('submit-xor').disabled = type === 'xor';
+    //if (xorVisible) document.getElementById('submit-xor').disabled = type === 'xor';
 }
 
 const getBinary = (a) => {
@@ -58,13 +59,14 @@ const getBinary = (a) => {
     return newBinNum;
 }
 
+/*
 const enableXOR = () => {
     xorVisible = true;
 
     // Add a break
     document.getElementById('operations').appendChild(document.createElement('br'));
     // Create a new button
-    // <input name="submit" type="button" id="submit-and" value="&&"/>
+    // <input name="submit" type="button" id="submit-xor" value="^^"/>
     let newInput = document.createElement('input');
     newInput.className = 'submit operation';
     newInput.onclick = () => setOperation('xor');
@@ -73,7 +75,7 @@ const enableXOR = () => {
     newInput.id = 'submit-xor';
     newInput.value = '^^';
     document.getElementById('operations').appendChild(newInput);
-}
+}*/
 
 const fillRects = (canvas, card) => {
     const ctx = canvas;
@@ -193,7 +195,7 @@ const reactPressed = (card, a, isDragging) => {
             newCaptchaArray += captchaValues[finalNum];
         }
 
-        if (!xorVisible && newCaptchaArray.toLowerCase().includes('xyzzy')) enableXOR();
+        //if (!xorVisible && newCaptchaArray.toLowerCase().includes('xyzzy')) enableXOR();
 
         updateValue(`captcha-${card}`, newCaptchaArray);
     }
@@ -234,7 +236,7 @@ const convertCaptcha = (card) => {
     
     console.log(charArray);
 
-    if (!xorVisible && text.toLowerCase().includes('xyzzy')) enableXOR();
+    //if (!xorVisible && text.toLowerCase().includes('xyzzy')) enableXOR();
 
     draw();
 }
@@ -287,6 +289,3 @@ const initialize = () => {
 
     draw();
 }
-
-// Suck my fucking DICK, Leo!!!!
-// zFVytxR2 ^^ TzdhVEyr
