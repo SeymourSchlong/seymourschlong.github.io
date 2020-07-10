@@ -1,0 +1,32 @@
+body {
+    display: flex;
+    flex-flow: wrap;
+    background-color: black;
+    font-size: 30px;
+}
+
+.card {
+    background-color: salmon;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    width: 48%;
+    height: 350px;
+}
+
+.card > div {
+    text-align: center;
+}
+
+.card a {
+    font-family: Arial;
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+
+iframe {
+    border: none;
+    border-radius: 5px;
+    background-color: black;
+}
