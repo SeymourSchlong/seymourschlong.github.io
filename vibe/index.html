@@ -56,7 +56,7 @@
         }
       
         if (parseFloat(params.bpm)) {
-            video.playbackRate = newbpm / bpm;
+            video.playbackRate = parseFloat(params.bpm) / bpm;
             document.querySelector('input').value = parseFloat(params.bpm);
         }
     </script>
