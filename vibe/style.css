@@ -1,3 +1,10 @@
+@font-face {
+    font-family: Rodin;
+    src: url(https://pipe.miroware.io/5b52ba1d94357d5d623f74aa/fonts/arial_rounded.ttf);
+    font-style: normal;
+    font-weight: normal;
+}
+
 input {
     font-size: 32px;
     outline: none;
@@ -23,6 +30,41 @@ video {
     margin: auto;
 }
 
+span, input {
+    text-align: center;
+    font-family: consolas;
+    font-weight: bold;
+}
+
+span {
+    user-select: none;
+}
+
 body {
+    font-size: 32px;
     background-color: #797979;
+}
+
+#playback {
+    border: 2.5px solid black;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    margin-bottom: -12px;
+    margin-right: 20px;
+}
+
+.pause {
+    background-image: url("pause.svg");
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.play {
+    background-image: url("play.svg");
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: 80%;
 }
