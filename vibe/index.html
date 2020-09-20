@@ -4,7 +4,7 @@
     <title>groovy!</title>
     <meta name="og:title" content="Groovy!">
     <meta name="theme-color" content="#dcded9">
-    <meta name="og:image" content="groove.gif">
+    <meta name="og:image" content="https://github.com/SeymourSchlong/seymourschlong.github.io/blob/master/vibe/groove.gif?raw=true">
     <link rel="icon" type="image/png" href="icon.png">
     <link id="script-css" type="text/css" rel="stylesheet" href="style.css">
   </head>
@@ -16,18 +16,24 @@
     </div>
     <script>
         let bpm = 126.4;
-        let songbpm = bpm;
-        let rate = 1;
 
         let video = document.querySelector('video');
 
         const updateBpm = (newbpm) => {
-          try {
-            songbpm = newbpm;
-            rate = songbpm / bpm;
-            video.playbackRate = rate;
-            video.play();
-          } catch(err) {}
+            try {
+                video.playbackRate = newbpm / bpm;
+                video.play();
+            } catch(err) {}
+        }
+        
+        const togglePlay = (input) => {
+            if (input.className === 'play') {
+                input.className = 'pause';
+                video.play();
+            } else {
+                input.className = 'play';
+                video.pause();
+            }
         }
 
         let rawParams;
@@ -50,7 +56,7 @@
         }
       
         if (parseFloat(params.bpm)) {
-            updateBpm(parseFloat(params.bpm));
+            video.playbackRate = newbpm / bpm;
             document.querySelector('input').value = parseFloat(params.bpm);
         }
     </script>
