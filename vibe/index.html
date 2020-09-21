@@ -19,22 +19,23 @@
 
         const video = document.querySelector('video');
         const bpminput = document.querySelector('input');
+        const mediaButton = document.querySelector('#playback');
 
         const updateBpm = (newbpm) => {
             try {
                 video.playbackRate = newbpm / bpm;
                 video.play();
                 window.history.replaceState({}, null, `/vibe/?bpm=${parseFloat(bpminput.value)}`);
-                bpminput.className = 'pause';
+                mediaButton.className = 'pause';
             } catch(err) {}
         }
         
-        const togglePlay = (input) => {
-            if (input.className === 'play') {
-                input.className = 'pause';
+        const togglePlay = (div) => {
+            if (div.className === 'play') {
+                div.className = 'pause';
                 video.play();
             } else {
-                input.className = 'play';
+                div.className = 'play';
                 video.pause();
             }
         }
