@@ -25,7 +25,7 @@
                 video.playbackRate = newbpm / bpm;
                 video.play();
                 window.history.replaceState({}, null, `/vibe/?bpm=${parseFloat(bpminput.value)}`);
-                input.className = 'pause';
+                bpminput.className = 'pause';
             } catch(err) {}
         }
         
