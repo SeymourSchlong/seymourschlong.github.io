@@ -9,64 +9,109 @@
         <link id="script-css" type="text/css" rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div id="main">
-            <video loop><source src="vibe.mp4" type="video/mp4">Your browser does not support the video tag.</video>
-            <br>
-            <span><div id="playback" class="play" onclick="togglePlay(this)"></div>BPM: <input type="number" min="0" max="2022" size="5" value="126" placeholder="BPM" onchange="updateBpm(this.value)"></span>
-        </div>
-        <script>
-            const bpm = 126.4;
+    <div id="main">
+      <video loop onclick="cycleVid();"><source src="https://seymourschlong.github.io/vibe/vibe.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+      <span style="font-size: 16px;">Press "j" to the rhythm to get BPM</span>
+      <br>
+      <span><div id="playback" class="play" onclick="togglePlay(this)"></div>BPM: <input type="number" min="0" max="2022" size="5" value="125" placeholder="BPM" onchange="updateBpm(this.value)"></span>
+    </div>
+    <script>
+        let selectedIndex = 0;
+        let bpms = [125, 120];
+        let videos = ['https://seymourschlong.github.io/vibe/vibe.mp4', 'https://seymourschlong.github.io/vibe/hamster.mp4'];
 
-            const video = document.querySelector('video');
-            const bpminput = document.querySelector('input');
-            const mediaButton = document.querySelector('#playback');
-
-            video.addEventListener('pause', () => {
-                mediaButton.className = 'play';
-            });
-            video.addEventListener('play', () => {
-                mediaButton.className = 'pause';
-            });
-
-            const updateBpm = (newbpm) => {
-                try {
-                    video.playbackRate = newbpm / bpm;
-                    video.play();
-                    window.history.replaceState({}, null, `/vibe/?bpm=${parseFloat(bpminput.value)}`);
-                } catch(err) {}
+        let video = document.querySelector('video');
+      
+        const cycleVid = () => {
+            updateVideo(selectedIndex + 1 >= bpms.length ? 0 : selectedIndex + 1);
+        }
+      
+        const updateVideo = (newIndex) => {
+            if (newIndex >= 0 && newIndex <= bpms.length) {
+              selectedIndex = newIndex;
+              video.src = videos[newIndex];
             }
+            video.play();
+        }
 
-            const togglePlay = (div) => {
-                if (video.paused) {
-                    video.play();
-                } else {
-                    video.pause();
-                }
-            }
-
-            let rawParams;
-            if (location.href.indexOf("#") != -1) {
-                rawParams = location.href.slice(0, location.href.indexOf("#"));
+        const updateBpm = (newbpm) => {
+            try {
+                video.playbackRate = newbpm / bpms[selectedIndex];
+                video.play();
+            } catch(err) {}
+        }
+        
+        const togglePlay = (input) => {
+            if (input.className === 'play') {
+                input.className = 'pause';
+                video.play();
             } else {
-                rawParams = location.href;
+                input.className = 'play';
+                video.pause();
             }
-            if (rawParams.indexOf("?") != -1) {
-                rawParams = rawParams.slice(rawParams.indexOf("?") + 1).split("&");
-            } else {
-                rawParams = [];
-            }
-            const params = {};
-            for (let i = 0; i < rawParams.length; i++) {
-                try {
-                    const p = rawParams[i].split("=");
-                    params[p[0]] = decodeURIComponent(p[1]);
-                } catch (err) {}
-            }
+        }
 
-            if (parseFloat(params.bpm)) {
-                video.playbackRate = parseFloat(params.bpm) / bpm;
-                bpminput.value = parseFloat(params.bpm);
-            }
-        </script>
-    </body>
+        let rawParams;
+        if (location.href.indexOf("#") != -1) {
+            rawParams = location.href.slice(0, location.href.indexOf("#"));
+        } else {
+            rawParams = location.href;
+        }
+        if (rawParams.indexOf("?") != -1) {
+            rawParams = rawParams.slice(rawParams.indexOf("?") + 1).split("&");
+        } else {
+            rawParams = [];
+        }
+        const params = {};
+        for (let i = 0; i < rawParams.length; i++) {
+            try {
+                const p = rawParams[i].split("=");
+                params[p[0]] = decodeURIComponent(p[1]);
+            } catch (err) {}
+        }
+      
+        if (parseFloat(params.bpm)) {
+            video.playbackRate = newbpm / bpms[selectedIndex];
+            document.querySelector('input').value = parseFloat(params.bpm);
+        }
+        if (parseInt(params.v)) {
+            updateVideo(params.v);
+            document.querySelector('input').value = bpms[params.v];
+        }
+      
+        const bpmElm = document.querySelector('input');
+        
+        let count = 0;
+        let msecsFirst = 0;
+        let msecsPrevious = 0;
+
+        function ResetCount() {
+          count = 0;
+        }
+
+        function TapForBPM(e) {
+          if (document.activeElement !== document.body) return;
+          timeSeconds = new Date;
+          msecs = timeSeconds.getTime();
+          if ((msecs - msecsPrevious) > 2000) count = 0;
+
+          if (count == 0) {
+            msecsFirst = msecs;
+            count = 1;
+          }
+          else {
+            bpmAvg = Math.round(60000 * count / (msecs - msecsFirst) * 10) / 10;
+            bpmElm.value = bpmAvg;
+            updateBpm(bpmAvg);
+            count++;
+          }
+          msecsPrevious = msecs;
+          return true;
+        }
+
+        document.addEventListener('keydown', evt => {
+          if (evt.key === 'j') TapForBPM();
+        });
+    </script>
+  </body>
 </html>
