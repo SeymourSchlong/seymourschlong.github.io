@@ -70,13 +70,14 @@
             } catch (err) {}
         }
       
-        if (parseFloat(params.bpm)) {
-            video.playbackRate = newbpm / bpms[selectedIndex];
-            document.querySelector('input').value = parseFloat(params.bpm);
-        }
         if (parseInt(params.v)) {
             updateVideo(params.v);
             document.querySelector('input').value = bpms[params.v];
+        }
+
+        if (parseFloat(params.bpm)) {
+            video.playbackRate = parseFloat(params.bpm) / bpms[selectedIndex];
+            document.querySelector('input').value = parseFloat(params.bpm);
         }
       
         const bpmElm = document.querySelector('input');
