@@ -17,10 +17,11 @@
     </div>
     <script>
         let selectedIndex = 0;
-        let bpms = [125, 120, 120];
+        let bpms = [125, 120, 240];
         let videos = ['https://seymourschlong.github.io/vibe/vibe.mp4', 'https://seymourschlong.github.io/vibe/hamster.mp4', 'https://seymourschlong.github.io/vibe/rockin.mp4'];
 
         let video = document.querySelector('video');
+        let bpmInput = document.querySelector('input');
       
         const cycleVid = () => {
             updateVideo(selectedIndex + 1 >= bpms.length ? 0 : selectedIndex + 1);
@@ -31,22 +32,28 @@
               selectedIndex = newIndex;
               video.src = videos[newIndex];
             }
-            video.play();
+            updateBpm(parseFloat(bpmInput.value));
         }
+
+        video.addEventListener('pause', () => {
+            mediaButton.className = 'play';
+        });
+        video.addEventListener('play', () => {
+            mediaButton.className = 'pause';
+        });
 
         const updateBpm = (newbpm) => {
             try {
-                video.playbackRate = newbpm / bpms[selectedIndex];
+                video.playbackRate = newbpm / bpm;
                 video.play();
+                window.history.replaceState({}, null, `/vibe/?bpm=${parseFloat(bpminput.value)}`);
             } catch(err) {}
         }
-        
-        const togglePlay = (input) => {
-            if (input.className === 'play') {
-                input.className = 'pause';
+
+        const togglePlay = (div) => {
+            if (video.paused) {
                 video.play();
             } else {
-                input.className = 'play';
                 video.pause();
             }
         }
