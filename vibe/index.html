@@ -20,8 +20,9 @@
         let bpms = [125, 120, 240];
         let videos = ['https://seymourschlong.github.io/vibe/vibe.mp4', 'https://seymourschlong.github.io/vibe/hamster.mp4', 'https://seymourschlong.github.io/vibe/rockin.mp4'];
 
-        let video = document.querySelector('video');
-        let bpmInput = document.querySelector('input');
+        const video = document.querySelector('video');
+        const bpminput = document.querySelector('input');
+        const mediaButton = document.querySelector('#playback');
       
         const cycleVid = () => {
             updateVideo(selectedIndex + 1 >= bpms.length ? 0 : selectedIndex + 1);
@@ -32,7 +33,7 @@
               selectedIndex = newIndex;
               video.src = videos[newIndex];
             }
-            updateBpm(parseFloat(bpmInput.value));
+            updateBpm(parseFloat(bpminput.value));
         }
 
         video.addEventListener('pause', () => {
@@ -79,15 +80,13 @@
       
         if (parseInt(params.v)) {
             updateVideo(params.v);
-            document.querySelector('input').value = bpms[params.v];
+            bpminput.value = bpms[params.v];
         }
 
         if (parseFloat(params.bpm)) {
             video.playbackRate = parseFloat(params.bpm) / bpms[selectedIndex];
-            document.querySelector('input').value = parseFloat(params.bpm);
+            bpminput.value = parseFloat(params.bpm);
         }
-      
-        const bpmElm = document.querySelector('input');
         
         let count = 0;
         let msecsFirst = 0;
@@ -109,7 +108,7 @@
           }
           else {
             bpmAvg = Math.round(60000 * count / (msecs - msecsFirst) * 10) / 10;
-            bpmElm.value = bpmAvg;
+            bpminput.value = bpmAvg;
             updateBpm(bpmAvg);
             count++;
           }
