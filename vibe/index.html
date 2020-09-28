@@ -27,7 +27,7 @@
         }
       
         const updateVideo = (newIndex) => {
-            if (newIndex >= 0 && newIndex <= bpms.length) {
+            if (newIndex >= 0 && newIndex < bpms.length) {
               selectedIndex = newIndex;
               video.src = videos[newIndex];
             }
