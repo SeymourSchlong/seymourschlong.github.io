@@ -10,7 +10,7 @@
     </head>
     <body>
     <div id="main">
-      <video loop onclick="cycleVid();"><source src="https://seymourschlong.github.io/vibe/vibe.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+      <video loop onclick="cycleVid();" width="400"><source src="https://seymourschlong.github.io/vibe/vibe.mp4" type="video/mp4">Your browser does not support the video tag.</video>
       <span style="font-size: 16px;">Press "j" to the rhythm to get BPM</span>
       <br>
       <span><div id="playback" class="play" onclick="togglePlay(this)"></div>BPM: <input type="number" min="0" max="2022" size="5" value="125" placeholder="BPM" onchange="updateBpm(this.value)"></span>
