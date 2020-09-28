@@ -45,7 +45,7 @@
 
         const updateBpm = (newbpm) => {
             try {
-                video.playbackRate = newbpm / bpm;
+                video.playbackRate = newbpm / bpms[selectedIndex];
                 video.play();
                 window.history.replaceState({}, null, `/vibe/?bpm=${parseFloat(bpminput.value)}`);
             } catch(err) {}
