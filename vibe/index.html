@@ -10,14 +10,15 @@
     </head>
     <body>
     <div id="main">
-      <video loop onclick="cycleVid();" width="400"><source src="https://seymourschlong.github.io/vibe/vibe.mp4" type="video/mp4">Your browser does not support the video tag.</video>
-      <span style="font-size: 16px;">Press "j" to the rhythm to get BPM</span>
-      <br>
-      <span><div id="playback" class="play" onclick="togglePlay(this)"></div>BPM: <input type="number" min="0" max="2022" size="5" value="125" placeholder="BPM" onchange="updateBpm(this.value)"></span>
+        <span style="font-size: 16px;">click video to change animation</span>
+        <video loop onclick="cycleVid();" width="400"><source src="https://seymourschlong.github.io/vibe/vibe.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+        <span style="font-size: 16px;">press "j" to the rhythm to get BPM</span>
+        <br>
+        <span><div id="playback" class="play" onclick="togglePlay(this)"></div>BPM: <input type="number" min="0" max="2022" size="5" value="125" placeholder="BPM" onchange="updateBpm(this.value)"></span>
     </div>
     <script>
         let selectedIndex = 0;
-        let bpms = [125, 120, 240];
+        let bpms = [125, 128, 255];
         let videos = ['https://seymourschlong.github.io/vibe/vibe.mp4', 'https://seymourschlong.github.io/vibe/hamster.mp4', 'https://seymourschlong.github.io/vibe/rockin.mp4'];
 
         const video = document.querySelector('video');
@@ -26,6 +27,7 @@
       
         const cycleVid = () => {
             updateVideo(selectedIndex + 1 >= bpms.length ? 0 : selectedIndex + 1);
+            window.history.replaceState({}, null, `/vibe/?bpm=${parseFloat(bpminput.value)}&v=${selectedIndex}`);
         }
       
         const updateVideo = (newIndex) => {
@@ -47,7 +49,7 @@
             try {
                 video.playbackRate = newbpm / bpms[selectedIndex];
                 video.play();
-                window.history.replaceState({}, null, `/vibe/?bpm=${parseFloat(bpminput.value)}`);
+                window.history.replaceState({}, null, `/vibe/?bpm=${parseFloat(bpminput.value)}&v=${selectedIndex}`);
             } catch(err) {}
         }
 
