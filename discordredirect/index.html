@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Discord App Redirect</title>
+    </head>
+    <body>
+        <p>
+          Click "Open Discord" to view the content in the app or <a>click here</a> to view in the browser.
+        </p>
+        <script>
+            let rawParams;
+            if (location.href.indexOf("#") != -1) {
+                rawParams = location.href.slice(0, location.href.indexOf("#"));
+            } else {
+                rawParams = location.href;
+            }
+            if (rawParams.indexOf("?") != -1) {
+                rawParams = rawParams.slice(rawParams.indexOf("?") + 1).split("&");
+            } else {
+                rawParams = [];
+            }
+            const params = { type: 'users', path: '277928549866799125'};
+            for (let i = 0; i < rawParams.length; i++) {
+                try {
+                    const p = rawParams[i].split("=");
+                    params[p[0]] = decodeURIComponent(p[1]);
+                } catch (err) {}
+            }
+
+            location.href = `discord://discord.com/${params.type}/${params.path}`;
+            document.querySelector('a').href = `https://discord.com/${params.type}/${params.path}`;
+        </script>
+    </body>
+</html>
