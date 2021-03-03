@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>weedalien</title>
+        <meta name="og:title" content="weedalien">
+        <meta name="theme-color" content="#dcded9">
+        <meta name="og:image" content="https://github.com/SeymourSchlong/seymourschlong.github.io/blob/master/weedalien/weedalien.gif?raw=true">
+        <link rel="icon" type="image/png" href="https://github.com/SeymourSchlong/seymourschlong.github.io/blob/master/weedalien/weed.png?raw=true">
+        <style>
+            #weed {
+                background-image: url("https://github.com/SeymourSchlong/seymourschlong.github.io/blob/master/weedalien/weedalien.png?raw=true");
+                height: 200px;
+                width: 200px;
+                display: inline-block;
+            }
+
+            @keyframes animate {
+                from { background-position: 0 0px; }
+                to { background-position: 0 -8600px; }
+            }
+            #container {
+                width: fit-content;
+                display: block;
+                margin: auto;
+                text-align: center;
+            }
+        </style>
+        <style id="script-update">
+            #weed {
+                animation: animate 3s steps(43) infinite;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="weed"></div><br>
+            <span><input type="number" min="0" value="30" onchange="updateSpeed()" style="width: 5em"> speed</span><br>
+            <span>Rotations per second: <span id="speed-text">2</span></span>
+        </div>
+        <script>
+            const speedStyle = document.querySelector('#script-update');
+            const speedInput = document.querySelector('input[type=number]');
+            const speedText = document.querySelector('#speed-text');
+            let speed = 30;
+
+            const updateSpeed = () => {
+                speed = Math.floor((60 / speedInput.value) * 100000) / 100000;
+
+                speedStyle.textContent = `#weed { animation: animate ${speed}s steps(43) infinite; }`;
+                speedText.textContent = speed;
+            }
+        </script>
+    </body>
+</html>
