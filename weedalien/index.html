@@ -13,6 +13,9 @@
                 height: 200px;
                 width: 200px;
                 display: inline-block;
+                animation: steps(43);
+                animation-name: animate;
+                animation-iteration-count: infinite;
             }
 
             @keyframes animate {
@@ -34,7 +37,7 @@
     </head>
     <body>
         <div id="container">
-            <div id="weed"></div><br>
+            <div id="weed" style="animation-duration: 3s;"></div><br>
             <span><input type="number" value="30" onchange="updateSpeed()" style="width: 5em"> speed</span><br>
             <span>Seconds per rotation: <span id="speed-text">2</span></span>
         </div>
@@ -44,6 +47,7 @@
             const speedStyle = document.querySelector('#script-update');
             const speedInput = document.querySelector('input[type=number]');
             const speedText = document.querySelector('#speed-text');
+            const animDiv = document.querySelector('#weed');
             let speed = 30;
 
             const updateSpeed = () => {
@@ -55,7 +59,7 @@
                 
                 speed = Math.floor((60 / tempSpeed) * 100000) / 100000;
 
-                speedStyle.textContent = `#weed { animation: animate ${speed}s steps(43) infinite; }`;
+                animDiv.style = `animation-duration: ${speed}s;`;
                 speedText.textContent = speed;
             }
         </script>
