@@ -48,7 +48,7 @@
 
 @keyframes opacity-shift {
     to {
-        opacity: 0.2;
+        opacity: 0.15;
         top: -20px;
         filter: brightness(0.8);
     }
