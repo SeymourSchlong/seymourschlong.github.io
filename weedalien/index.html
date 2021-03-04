@@ -45,7 +45,7 @@
 
             const updateSpeed = () => {
                 let speed = Math.abs(Math.floor((60 / speedInput.value) * 1000000) / 1000000);
-                animDiv.style = `animation-duration: ${speed}s;${speed < 0 ? 'animation-direction: reverse' : ''}`;
+                animDiv.style = `animation-duration: ${speed}s;${speedInput.value < 0 ? 'animation-direction: reverse' : ''}`;
                 speedText.textContent = speed;
             }
         </script>
