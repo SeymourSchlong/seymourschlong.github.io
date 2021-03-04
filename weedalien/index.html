@@ -50,7 +50,7 @@
                 let tempSpeed = speedInput.value;
                 
                 if (speedInput.value < 0) {
-                    tempSpeed = 3600 - Math.abs(speedInput);
+                    tempSpeed = 3600 - Math.abs(speedInput.value);
                 }
                 
                 speed = Math.floor((60 / tempSpeed) * 100000) / 100000;
