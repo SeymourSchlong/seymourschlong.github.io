@@ -35,7 +35,7 @@
     <body>
         <div id="container">
             <div id="weed"></div><br>
-            <span><input type="number" min="0" value="30" onchange="updateSpeed()" style="width: 5em"> speed</span><br>
+            <span><input type="number" value="30" onchange="updateSpeed()" style="width: 5em"> speed</span><br>
             <span>Seconds per rotation: <span id="speed-text">2</span></span>
         </div>
         </div><div class="overlay"><div class="overlay-1"></div></div>
@@ -47,7 +47,13 @@
             let speed = 30;
 
             const updateSpeed = () => {
-                speed = Math.floor((60 / speedInput.value) * 100000) / 100000;
+                let tempSpeed = speedInput.value;
+                
+                if (speedInput.value < 0) {
+                    tempSpeed = 3600 - Math.abs(speedInput);
+                }
+                
+                speed = Math.floor((60 / tempSpeed) * 100000) / 100000;
 
                 speedStyle.textContent = `#weed { animation: animate ${speed}s steps(43) infinite; }`;
                 speedText.textContent = speed;
