@@ -29,11 +29,6 @@
                 text-align: center;
             }
         </style>
-        <style id="script-update">
-            #weed {
-                animation: animate 3s steps(43) infinite;
-            }
-        </style>
     </head>
     <body>
         <div id="container">
@@ -44,22 +39,14 @@
         </div><div class="overlay"><div class="overlay-1"></div></div>
         <div class="overlay-2"></div>
         <script>
-            const speedStyle = document.querySelector('#script-update');
             const speedInput = document.querySelector('input[type=number]');
             const speedText = document.querySelector('#speed-text');
             const animDiv = document.querySelector('#weed');
-            let speed = 30;
 
             const updateSpeed = () => {
-                let tempSpeed = speedInput.value;
-                
-                if (speedInput.value < 0) {
-                    tempSpeed = 3600 - Math.abs(speedInput.value);
-                }
-                
-                speed = Math.floor((60 / tempSpeed) * 100000) / 100000;
-
+                let speed = Math.abs(Math.floor((60 / speedInput.value) * 1000000) / 1000000);
                 animDiv.style = `animation-duration: ${speed}s;`;
+                if (speed < 0) animDiv.style += 'animation-direction: reverse;';
                 speedText.textContent = speed;
             }
         </script>
