@@ -112,7 +112,7 @@ const load = () => {
 
         const pos = getPosition();
 
-        if (!dead && focus === 'mines' && (pos.x >= 0 && pos.x < 30) && (pos.y >= 0 && pos.y < 16)) {
+        if (!dead && mouse.down && (pos.x >= 0 && pos.x < 30) && (pos.y >= 0 && pos.y < 16)) {
             ctx.drawImage(images.tiles.down, 24 + pos.x * 32, 110 + pos.y * 32);
         }
 
@@ -228,6 +228,7 @@ const load = () => {
         mouse.down = evt.which === 1;
 
         if (evt.which === 1) {
+            bigState = 2;
             if (bigCollision()) {
                 bigState = 1;
                 focus = 'big';
@@ -245,7 +246,6 @@ const load = () => {
             if (evt.which === 1) {
                 if (minesCollision()) {
                     bigState = 2;
-                    focus = 'mines';
                 }
             } else if (evt.which === 3) {
                 if (minesCollision()) {
@@ -270,8 +270,9 @@ const load = () => {
                     sounds.unfart.play();
                 }
             }
-            focus = 'none';
-        } else if (focus === 'mines') {
+        }
+        
+        if (!dead) {
             if (minesCollision()) {
                 if (evt.which === 1) {
                     // Check if there's a flag there
@@ -282,8 +283,9 @@ const load = () => {
                     }
                 }
             }
-            focus = 'none';
         }
+
+        focus = 'none';
         bigState = 0;
 
         draw();
