@@ -1,3 +1,5 @@
+let funny = false;
+
 const load = () => {
     let flagCount = 0;
     let bigState = 0;
@@ -12,8 +14,20 @@ const load = () => {
 
     const mouse = {
         x: 0,
-        y: 0
+        y: 0,
+        down: false
     };
+
+    const sounds = {
+        fart: new Audio(),
+        unfart: new Audio(),
+        doink: new Audio(),
+        undoink: new Audio()
+    }
+    sounds.fart.src = 'https://pipe.miroware.io/5b52ba1d94357d5d623f74aa/minesweeper/sounds/fart.mp3';
+    sounds.unfart.src = 'https://pipe.miroware.io/5b52ba1d94357d5d623f74aa/minesweeper/sounds/unfart.mp3';
+    sounds.doink.src = 'https://pipe.miroware.io/5b52ba1d94357d5d623f74aa/minesweeper/sounds/doink.mp3';
+    sounds.undoink.src = 'https://pipe.miroware.io/5b52ba1d94357d5d623f74aa/minesweeper/sounds/undoink.mp3';
 
     const images = {
         bg: new Image(),
@@ -159,6 +173,16 @@ const load = () => {
         const index = pos.y * 30 + pos.x;
         flags[index] = !flags[index];
         flagCount += 1 * (flags[index]*2-1);
+
+        if (funny) {
+            if (flags[index]) {
+                sounds.doink.currentTime = 0;
+                sounds.doink.play();
+            } else {
+                sounds.undoink.currentTime = 0;
+                sounds.undoink.play();
+            }
+        }
     }
 
     const DIE = (pos) => {
@@ -178,6 +202,11 @@ const load = () => {
         }
 
         failPos = pos;
+
+        if (funny) {
+            sounds.fart.currentTime = 0;
+            sounds.fart.play();
+        }
     }
 
     canvas.addEventListener('contextmenu', evt => {
@@ -188,6 +217,7 @@ const load = () => {
     canvas.addEventListener('mousedown', evt => {
         mouse.x = evt.offsetX;
         mouse.y = evt.offsetY;
+        mouse.down = evt.which === 1;
 
         if (evt.which === 1) {
             if (bigCollision()) {
@@ -215,16 +245,20 @@ const load = () => {
     canvas.addEventListener('mouseup', evt => {
         mouse.x = evt.offsetX;
         mouse.y = evt.offsetY;
+        mouse.down = false;
 
         if (focus === 'big') {
             if (evt.which === 1 && bigCollision()) {
                 newGame();
+                if (funny) {
+                    sounds.unfart.currentTime = 0;
+                    sounds.unfart.play();
+                }
             }
             focus = 'none';
         } else if (focus === 'mines') {
             if (minesCollision()) {
                 if (evt.which === 1) {
-                    bigState = 0;
                     // Check if there's a flag there
                     const pos = getPosition();
                     if (!flags[pos.y * 30 + pos.x]) {
@@ -235,6 +269,7 @@ const load = () => {
             }
             focus = 'none';
         }
+        bigState = 0;
 
         draw();
     });
@@ -249,12 +284,8 @@ const load = () => {
             } else {
                 bigState = 0;
             }
-        } else if (focus === 'mines') {
-            if (minesCollision()) {
-                bigState = 2;
-            } else {
-                bigState = 0;
-            }
+        } else if (mouse.down) {
+            bigState = 2;
         }
 
         draw();
