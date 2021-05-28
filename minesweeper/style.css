@@ -1,0 +1,10 @@
+body {
+    background-color: gray
+}
+
+#canvas {
+    display: block;
+    margin: auto;
+    outline: none;
+    image-rendering: pixelated;
+}
