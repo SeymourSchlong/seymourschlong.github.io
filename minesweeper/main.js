@@ -67,7 +67,7 @@ const load = () => {
         });
 
         // Heads
-        ['default', 'down', 'fear', 'dead'].forEach(item => {
+        ['default', 'down', 'fear', 'dead', 'cool'].forEach(item => {
             images.heads[item] = new Image();
             images.heads[item].src = img('big_'+item);
         });
@@ -118,7 +118,7 @@ const load = () => {
 
         switch (bigState) {
             case 0:
-                ctx.drawImage(images.heads.default, 478, 30);
+                ctx.drawImage(funny ? images.heads.cool : images.heads.default, 478, 30);
                 break;
             case 1:
                 ctx.drawImage(images.heads.down, 478, 30);
