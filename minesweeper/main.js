@@ -19,15 +19,17 @@ const load = () => {
     };
 
     const sounds = {
+        on: new Audio(),
         fart: new Audio(),
         unfart: new Audio(),
         doink: new Audio(),
         undoink: new Audio()
     }
-    sounds.fart.src = 'https://pipe.miroware.io/5b52ba1d94357d5d623f74aa/minesweeper/sounds/fart.mp3';
-    sounds.unfart.src = 'https://pipe.miroware.io/5b52ba1d94357d5d623f74aa/minesweeper/sounds/unfart.mp3';
-    sounds.doink.src = 'https://pipe.miroware.io/5b52ba1d94357d5d623f74aa/minesweeper/sounds/doink.mp3';
-    sounds.undoink.src = 'https://pipe.miroware.io/5b52ba1d94357d5d623f74aa/minesweeper/sounds/undoink.mp3';
+    sounds.on.src = './sounds/on.mp3';
+    sounds.fart.src = './sounds/fart.mp3';
+    sounds.unfart.src = './sounds/unfart.mp3';
+    sounds.doink.src = './sounds/doink.mp3';
+    sounds.undoink.src = './sounds/undoink.mp3';
 
     const images = {
         bg: new Image(),
@@ -102,9 +104,11 @@ const load = () => {
         // Third number
         ctx.drawImage(images.numbers[flagStr[flagStr.length - 1]], 88, 34);
 
-        /*
-        ctx.fillStyle = '#f005';
-        ctx.fillRect(24, 110, 960, 512);*/
+        // The Funny Number
+        if (funny) {
+            ctx.drawImage(images.numbers[6], 920, 34);
+            ctx.drawImage(images.numbers[9], 946, 34);
+        }
 
         const pos = getPosition();
 
@@ -160,6 +164,10 @@ const load = () => {
     const minesCollision = () => {
         // 24, 110 to 983, 621
         return (mouse.x >= 24 && mouse.x <= 983) && (mouse.y >= 110 && mouse.y <= 621);
+    }
+
+    const funnyCollision = () => {
+        return (mouse.x >= 890 && mouse.x <= 971) && (mouse.y >= 30 && mouse.y <= 79);
     }
 
     const getPosition = () => {
@@ -223,6 +231,13 @@ const load = () => {
             if (bigCollision()) {
                 bigState = 1;
                 focus = 'big';
+            } else if (funnyCollision()) {
+                funny = !funny;
+                // Play sound
+                if (funny) {
+                    sounds.on.currentTime = 0;
+                    sounds.on.play();
+                }
             }
         }
 
