@@ -65,40 +65,22 @@ const projects = [
         img: "https://seymourschlong.github.io/images/captchacard-icon.png"
     },
     {
-        name: "WLD",
-        link: "https://github.com/SeymourSchlong/WLD",
-        desc: "A digital recreation of the classic puzzle named \"Klotski\".",
-        img: "https://seymourschlong.github.io/images/wld-icon.png"
+        name: "Minesweeper",
+        link: "https://seymourschlong.github.io/minesweeper",
+        desc: "Oh you think you're good at minesweeper?",
+        img: "https://seymourschlong.github.io/images/mine-icon.png"
     },
     {
-        name: "Game & Watch - Ball",
-        link: "https://github.com/SeymourSchlong/Ball",
-        desc: "My attempt at recreating the first Game & Watch game: Ball.",
-        img: "https://seymourschlong.github.io/images/ball-icon.png"
+        name: "Vibe",
+        link: "https://seymourschlong.github.io/vibe",
+        desc: "Get some cool animations to dance to your music! Input a bpm, or tap to sync it, and change the picture when you want.",
+        img: "https://seymourschlong.github.io/images/vibe-icon.gif"
     },
     {
-        name: "Frogger",
-        link: "https://github.com/SeymourSchlong/Frogger",
-        desc: "A recreation of the classic game Frogger.",
-        img: "https://seymourschlong.github.io/images/frogger-icon.png"
-    },
-    {
-        name: "Number Guessing Game",
-        link: "https://github.com/SeymourSchlong/Guessing_Game",
-        desc: "A guessing game which uses an excessive amount of 3D smileys.",
-        img: "https://seymourschlong.github.io/images/guess-icon.png"
-    },
-    {
-        name: "Breakout",
-        link: "https://github.com/SeymourSchlong/Breakout",
-        desc: "A pathetic attempt at recreating Breakout.",
-        img: "https://seymourschlong.github.io/images/breakout-icon.png"
-    },
-    {
-        name: "Pong",
-        link: "https://github.com/SeymourSchlong/Pong",
-        desc: "An equally pathetic attempt at recreating Pong.",
-        img: "https://seymourschlong.github.io/images/pong-icon.png"
+        name: "Weedalien",
+        link: "https://seymourschlong.github.io/weedalien",
+        desc: "Make that alien spin!!",
+        img: "https://seymourschlong.github.io/images/weed-icon.png"
     }
 ];
 
