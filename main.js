@@ -80,7 +80,7 @@ const projects = [
         name: "Weedalien",
         link: "https://seymourschlong.github.io/weedalien",
         desc: "Make that alien spin!!",
-        img: "https://seymourschlong.github.io/images/weed-icon.png"
+        img: "https://seymourschlong.github.io/images/weed-icon.gif"
     }
 ];
 
