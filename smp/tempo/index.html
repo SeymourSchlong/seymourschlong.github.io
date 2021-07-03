@@ -2,12 +2,13 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <title>SMP Tempo Calculator</title>
-	<link rel="icon" type="image/png" href="https://seymourschlong.github.io/images/main_ico.png">
-        <script type="text/javascript" src="/smp/tempo/main.js"></script>
-        <link rel="stylesheet" href="/smp/tempo/style.css">
+        <title>SMP Tempo Gap</title>
+		    <link rel="icon" type="image/png" href="https://seymourschlong.github.io/images/main_ico.png">
+        <script type="text/javascript" src="main.js"></script>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body onload="init();">
+        <!--
         <div>
             <input type="text" maxlength="100" id="tempo" placeholder="Tempo" rows="1" cols="10"/>
             <br>
@@ -35,6 +36,27 @@
         </div>
         <br>
         <br>
-        <iframe src="https://www.all8.com/tools/bpm.htm" width="400" height="310"></iframe>
+        <iframe src="https://www.all8.com/tools/bpm.htm" width="400" height="310"></iframe>-->
+        <div>
+            <div>
+                <span>Enter BPM here: </span>
+                <input type="text" maxlength="4" id="bpm" placeholder="BPM" rows="1" cols="4"/>
+                <br>
+                <br>
+                <span>BPM multiplier</span>
+                <select id="mult">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                    <option value="8">8</option>
+                    <option value="16" selected="selected">16</option>
+                    <option value="32">32</option>
+                </select>
+                <br>
+                <br>
+                <span id="tempo-text">Awaiting BPM input...</span>
+            </div>
+        </div>
     </body>
 </html>
