@@ -1,4 +1,28 @@
-#tempo, #tempo-text, #bpm, .submit, #bpm-text {
+:root {
+  --color1: #223982;
+  --color2: #7a90d6;
+  --color3: #c5d0f1;
+}
+
+body {
+  background-color: var(--color1);
+  font-family: Consolas;
+  font-size: 16px;
+  font-weight: bold;
+}
+body > div {
+  width: fit-content;
+  padding: 2em;
+  margin: auto;
+  display: block;
+  border: 7px solid var(--color2);
+  border-radius: 10px;
+  background-color: var(--color3);
+  margin-top: 10%;
+}
+
+
+/*#tempo, #tempo-text, #bpm, .submit, #bpm-text {
   margin: auto;
   display: block;
   text-align: center;
@@ -32,4 +56,4 @@ iframe {
 
 #BDTLL_feedback {
   display: none;
-}
+}/**/
