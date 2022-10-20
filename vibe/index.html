@@ -18,8 +18,8 @@
     </div>
     <script>
         let selectedIndex = 0;
-        let bpms = [125, 128, 255, 154, 109.89];
-        let videos = ['https://seymourschlong.github.io/vibe/cat.mp4', 'https://seymourschlong.github.io/vibe/hamster.mp4', 'https://seymourschlong.github.io/vibe/mario.mp4', 'https://seymourschlong.github.io/vibe/grooveguy.mp4', 'https://seymourschlong.github.io/vibe/binted.mp4'];
+        let bpms = [125, 128, 255, 154, 109.89, 147.24, 188.98, 100.4];
+        let videos = ['cat', 'hamster', 'mario', 'grooveguy', 'binted', 'inkboy', 'inkgirl', 'jelly'];
 
         const video = document.querySelector('video');
         const bpminput = document.querySelector('input');
@@ -33,7 +33,7 @@
         const updateVideo = (newIndex) => {
             if (newIndex >= 0 && newIndex < bpms.length) {
               selectedIndex = newIndex;
-              video.src = videos[newIndex];
+              video.src = 'https://seymourschlong.github.io/vibe/' + videos[newIndex] + '.mp4';
             }
             updateBpm(parseFloat(bpminput.value));
         }
