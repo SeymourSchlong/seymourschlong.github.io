@@ -18,28 +18,78 @@
     </div>
     <script>
         let selectedIndex = 0;
-        let videos = ['cat', 'hamster', 'mario', 'grooveguy', 'binted', 'inkboy', 'inkgirl', 'jelly'];
-        let lengths = [ 6.24, 0.5, 0.25, 0.8, 5.46, 3.435, 2.902, 2.646 ];
-        let beats = [13, 1, 1, 2, 10, 8, 8, 4];
-        let bpms = [];
-        for (let i = 0; i < beats.length; i++) {
-            bpms.push( (beats[i] / lengths[i]) * 60 );
+        const vids = [
+            {
+                name:   'cat',
+                length: 6.24,
+                beats:  13
+            },
+            {
+                name:   'hamster',
+                length: 0.5,
+                beats:  1
+            },
+            {
+                name:   'mario',
+                length: 0.25,
+                beats:  1
+            },
+            {
+                name:   'grooveguy',
+                length: 0.8,
+                beats:  2
+            },
+            {
+                name:   'binted',
+                length: 5.46,
+                beats:  10
+            },
+            {
+                name:   'inkboy',
+                length: 3.435,
+                beats:  8
+            },
+            {
+                name:   'inkgirl',
+                length: 2.902,
+                beats:  8
+            },
+            {
+                name:   'jelly',
+                length: 2.646,
+                beats:  4
+            },
+            {
+                name:   'bowse',
+                length: 0.9,
+                beats:  2
+            },
+            {
+                name:   'monkey',
+                length: 0.85,
+                beats:  1
+            },
+        ];
+
+        for (let i = 0; i < vids.length; i++) {
+            vids[i].bpm = (vids[i].beats / vids[i].length) * 60;
         }
-        //let bpms = [125, 128, 255, 154, 109.89, 147.24, 188.98, 100.4];
+
+        console.log(vids);
 
         const video = document.querySelector('video');
         const bpminput = document.querySelector('input');
         const mediaButton = document.querySelector('#playback');
       
         const cycleVid = () => {
-            updateVideo(selectedIndex + 1 >= bpms.length ? 0 : selectedIndex + 1);
+            updateVideo(selectedIndex + 1 >= vids.length ? 0 : selectedIndex + 1);
             window.history.replaceState({}, null, `/vibe/?bpm=${parseFloat(bpminput.value)}&v=${selectedIndex}`);
         }
       
         const updateVideo = (newIndex) => {
-            if (newIndex >= 0 && newIndex < bpms.length) {
+            if (newIndex >= 0 && newIndex < vids.length) {
               selectedIndex = newIndex;
-              video.src = 'https://seymourschlong.github.io/vibe/' + videos[newIndex] + '.mp4';
+              video.src = './' + vids[newIndex].name + '.mp4';
             }
             updateBpm(parseFloat(bpminput.value));
         }
@@ -53,7 +103,7 @@
 
         const updateBpm = (newbpm) => {
             try {
-                video.playbackRate = newbpm / bpms[selectedIndex];
+                video.playbackRate = newbpm / vids[selectedIndex].bpm;
                 video.play();
                 window.history.replaceState({}, null, `/vibe/?bpm=${parseFloat(bpminput.value)}&v=${selectedIndex}`);
             } catch(err) {}
@@ -88,11 +138,11 @@
       
         if (parseInt(params.v)) {
             updateVideo(params.v);
-            bpminput.value = bpms[params.v];
+            bpminput.value = vids[params.v].bpm;
         }
 
         if (parseFloat(params.bpm)) {
-            video.playbackRate = parseFloat(params.bpm) / bpms[selectedIndex];
+            video.playbackRate = parseFloat(params.bpm) / vids[selectedIndex].bpm;
             bpminput.value = parseFloat(params.bpm);
         }
         
