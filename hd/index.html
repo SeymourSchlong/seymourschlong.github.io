@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html>
-    <head></head>
-    <body>
-        <script>
-            // redirect to file garden link with hd splashtags
-
-            window.location = 'https://file.garden/W1K6HZQ1fV1iP3Sq/splashtags/hd/index.html' + location.search;
-        </script>
+    <head>
+        <meta charset="utf-8">
+        <title>HD Splashtag Viewer</title>
+        <meta name="theme-color" content="#ffff00">
+        <meta property="og:title" content="Splashtag Creator">
+        <meta name="og:type" content="website">
+        <meta name="description" content="Custom Splatoon 3 splashtag viewer.">
+        <meta name="og:description" content="Custom Splatoon 3 splashtag viewer.">
+        <meta property="og:image" content="https://seymourschlong.github.io/splashtags/assets/images/ico.png">
+        <link rel="icon" href="assets/images/ico.png">
+        <script type="text/javascript" src="main.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body onload="load();">
+        <div class="sitecontent">
+            <br>
+            <div id="container">
+                <div id="main" class="">
+                    <canvas id="splashtag" width="1400" height="400"></canvas>
+                    <div style="display: none;" class="title-font">sample text</div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
