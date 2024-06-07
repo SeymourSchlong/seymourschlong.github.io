@@ -114,7 +114,9 @@ const load = () => {
 			textCtx.clearRect(0, 0, 1400, 400);
 			ctx.clearRect(0, 0, 1400, 400);
 
-			if (!banners[tag.banner].layers) {
+			if (tag.banner < 0 || tag.banner >= assetIDs.banners.length) {
+
+			} else if (!banners[tag.banner].layers) {
 				// If not one of the special "pick your own colour" banners, just draw it
 				ctx.drawImage(banners[tag.banner].image, 0, 0, 1400, 400);
 			} else {
@@ -205,7 +207,7 @@ const load = () => {
 			textCtx.clearRect(0, 0, 1400, 400);
 
 			// If the banner name or badge has either "custom" or "data" it is definitely a custom resource
-			let customed = banners[tag.banner].custom || false;
+			let customed = banners[tag.banner]?.custom || false;
 
 			// Draw each badge on the banner
 			for (let i = 0; i < 3; i++) {
@@ -288,8 +290,6 @@ const load = () => {
 
 		window.banners = banners;
 
-		//banners[tag.banner] = 
-
 
 		// Loading in tags from param info.
 		// Name
@@ -316,8 +316,11 @@ const load = () => {
 		// Banners
 		if (params.get("p")) {
 			tag.banner = banners.findIndex(b => b.file.endsWith(assetIDs.banners[params.get("p")]));
+			
+			if (+params.get('p') < 0 || +params.get('p') >= assetIDs.banners.length)
+				tag.banner = -1;
 
-			loadAsset(banners[tag.banner]);
+			if (tag.banner >= 0) loadAsset(banners[tag.banner]);
 		} else {
 			loadAsset(banners[tag.banner]);
 		}
@@ -329,7 +332,7 @@ const load = () => {
 				//bannercolourpickers[i].value = tag.bgColours[i];
 			});
 		} else {
-			tag.colour = '#' + banners[tag.banner].colour;
+			tag.colour = '#' + banners[tag.banner]?.colour;
 		}
 		// Name colour
 		if (params.get("nc")) {
