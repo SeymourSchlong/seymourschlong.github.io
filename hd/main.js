@@ -119,6 +119,41 @@ const load = () => {
 		const getXScale = (width, max) => {
 			return width > max ? (max) / width : 1;
 		}
+
+		const customImages = {
+			banner: new Image(),
+			badges: [
+				new Image(),
+				new Image(),
+				new Image()
+			]
+		}
+
+		const customBg = document.querySelector('#custom-bg');
+		const customBadges = [...document.querySelectorAll('[id*="custom-badge"]')];
+
+		[customBg, ...customBadges].forEach((uploadElement, i) => {
+			uploadElement.addEventListener('change', () => {
+				const file = Array.from(uploadElement.files)[0]
+
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					const image = new Image();
+					image.src = e.target.result;
+					//const index = group.findIndex(b => b.file === image.src);
+
+					if (!i) customImages.banner = image;
+					else customImages.badges[i-1] = image;
+
+					//if (index === -1) {
+						setTimeout(() => {
+							renderSplashtag();
+						}, 1);
+					//}
+				}
+				reader.readAsDataURL(file);
+			});
+		});
 		
 		const renderSplashtag = () => {
 			textCtx.clearRect(0, 0, tagWidth, tagHeight);
@@ -126,8 +161,8 @@ const load = () => {
 
 			if (tag.banner < 0 || tag.banner >= assetIDs.banners.length) {
 				// do nothing lol
-			} else if (customBadges.file) {
-				ctx.drawImage(banners[tag.banner].image, 0, 0, tagWidth, tagHeight);
+			} else if (customBg.files[0]) {
+				ctx.drawImage(customImages.banner, 0, 0, tagWidth, tagHeight);
 			} else if (!banners[tag.banner].layers) {
 				// If not one of the special "pick your own colour" banners, just draw it
 				ctx.drawImage(banners[tag.banner].image, 0, 0, tagWidth, tagHeight);
@@ -215,28 +250,24 @@ const load = () => {
 			ctx.drawImage(textCanvas, 0, 0, tagWidth, tagHeight);
 			textCtx.clearRect(0, 0, tagWidth, tagHeight);
 
-			// If the banner name or badge has either "custom" or "data" it is definitely a custom resource
-			let customed = banners[tag.banner]?.custom || false;
-
 			// Draw each badge on the banner
 			for (let i = 0; i < 3; i++) {
 				if (tag.badges[i] !== -1) {
-					const x = scale*(480 + 74*i);
+					const badgeSize = scale * 70;
+					const x = scale * (480 + 74*i);
 
 					// Below used to resize custom badges to retain their scale.
-					if (badges[tag.badges[i]].custom) {
-						customed = true;
-						const cw = badges[tag.badges[i]].image.naturalWidth;
-						const ch = badges[tag.badges[i]].image.naturalHeight;
+					if (customBadges[i].files[0]) {
+						const image = customImages.badges[i];
+						const cw = image.naturalWidth;
+						const ch = image.naturalHeight;
 						const landscape = cw > ch;
 						const ratio = !landscape ? (cw / ch) : (ch / cw);
-						const width = landscape ? 70 : 70*ratio;
-						width *= scale;
-						const height = !landscape ? 70 : 70*ratio;
-						height *= scale;
-						ctx.drawImage(badges[tag.badges[i]].image, x + scale*(70 / 2 - width / 2), scale*(128 + (70 / 2 - height / 2)), width, height);
+						const width = landscape ? badgeSize : badgeSize*ratio;
+						const height = !landscape ? badgeSize : badgeSize*ratio;
+						ctx.drawImage(image, x + (badgeSize/2 - width/2), scale*128 + (badgeSize/2 - height/2), width, height);
 					} else {
-						ctx.drawImage(badges[tag.badges[i]].image, x, scale*128, scale*70, scale*70);
+						ctx.drawImage(badges[tag.badges[i]].image, x, scale*128, badgeSize, badgeSize);
 					}
 				}
 			}
@@ -246,6 +277,10 @@ const load = () => {
 			ctx.drawImage(textCanvas, 0, 0, tagWidth, tagHeight);
 			ctx.restore();
 		}
+
+		canvas.addEventListener('click', () => {
+			renderSplashtag();
+		});
 
 		window.renderSplashtag = renderSplashtag;
 		window.tag = tag;
