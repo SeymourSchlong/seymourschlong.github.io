@@ -160,6 +160,8 @@ canvas {
     border-radius: 4px;
     background-image: url("./assets/images/squidbg.png");
     animation: bganim 120s linear infinite;
+    width: 700px;
+    height: 200px;
 }
 
 @keyframes bganim {
@@ -326,7 +328,7 @@ input[type="radio"] {
     display: none;
 }
 input[type="file"] {
-    width: 240px;
+    width: 500px;
 }
 
 input[type="radio"]:checked + span {

@@ -16,6 +16,10 @@ const load = () => {
 
 	const params = new URLSearchParams(window.location.search);
 
+	const makeClone = (data) => {
+		return JSON.parse(JSON.stringify(data));
+	}
+
 	const loadedLanguage = () => {
 		// Languages here include a space between the titles
 		const isSpaceLang = () => {
@@ -76,20 +80,26 @@ const load = () => {
 		const canvas = document.querySelector('#splashtag');
 		const ctx = canvas.getContext('2d');
 
+		const realTagWidth = 700;
+		const realTagHeight = 200;
+		const scale = 2;
+		const tagWidth = realTagWidth * scale;
+		const tagHeight = realTagHeight * scale;
+
 		const canvasLayer = document.createElement('canvas');
-		canvasLayer.width = 1400;
-		canvasLayer.height = 400;
+		canvasLayer.width = tagWidth;
+		canvasLayer.height = tagHeight;
 		const layerCtx = canvasLayer.getContext('2d');
 
 		const compositeCanvas = document.createElement('canvas');
-		compositeCanvas.width = 1400;
-		compositeCanvas.height = 400;
+		compositeCanvas.width = tagWidth;
+		compositeCanvas.height = tagHeight;
 		const compositeCtx = compositeCanvas.getContext('2d');
 
 		const textScale = 2;
 		const textCanvas = document.createElement('canvas');
-		textCanvas.width = 1400*textScale;
-		textCanvas.height = 400*textScale;
+		textCanvas.width = tagWidth*textScale;
+		textCanvas.height = tagHeight*textScale;
 		const textCtx = textCanvas.getContext('2d');
 		textCtx.scale(textScale, textScale);
 
@@ -111,33 +121,35 @@ const load = () => {
 		}
 		
 		const renderSplashtag = () => {
-			textCtx.clearRect(0, 0, 1400, 400);
-			ctx.clearRect(0, 0, 1400, 400);
+			textCtx.clearRect(0, 0, tagWidth, tagHeight);
+			ctx.clearRect(0, 0, tagWidth, tagHeight);
 
 			if (tag.banner < 0 || tag.banner >= assetIDs.banners.length) {
-
+				// do nothing lol
+			} else if (customBadges.file) {
+				ctx.drawImage(banners[tag.banner].image, 0, 0, tagWidth, tagHeight);
 			} else if (!banners[tag.banner].layers) {
 				// If not one of the special "pick your own colour" banners, just draw it
-				ctx.drawImage(banners[tag.banner].image, 0, 0, 1400, 400);
+				ctx.drawImage(banners[tag.banner].image, 0, 0, tagWidth, tagHeight);
 			} else {
 				// Special custom colour banners draw each layer then are added
 				const imageLayers = banners[tag.banner].layerImages;
 				for (let i = 0; i < imageLayers.length; i++) {
-					compositeCtx.clearRect(0, 0, 1400, 400);
+					compositeCtx.clearRect(0, 0, tagWidth, tagHeight);
 					compositeCtx.save();
 					compositeCtx.fillStyle = tag.bgColours[!i ? i : imageLayers.length - i];
-					compositeCtx.drawImage(imageLayers[i], 0, 0, 1400, 400);
+					compositeCtx.drawImage(imageLayers[i], 0, 0, tagWidth, tagHeight);
 					compositeCtx.globalCompositeOperation = 'difference';
-					compositeCtx.fillRect(0, 0, 1400, 400);
+					compositeCtx.fillRect(0, 0, tagWidth, tagHeight);
 					compositeCtx.restore();
 
 					layerCtx.save();
-					layerCtx.drawImage(imageLayers[i], 0, 0, 1400, 400);
+					layerCtx.drawImage(imageLayers[i], 0, 0, tagWidth, tagHeight);
 					layerCtx.globalCompositeOperation = 'source-in';
-					layerCtx.drawImage(compositeCanvas, 0, 0, 1400, 400);
+					layerCtx.drawImage(compositeCanvas, 0, 0, tagWidth, tagHeight);
 					layerCtx.restore();
 					ctx.drawImage(canvasLayer, 0, 0);
-					layerCtx.clearRect(0, 0, 1400, 400);
+					layerCtx.clearRect(0, 0, tagWidth, tagHeight);
 				}
 			}
 
@@ -147,19 +159,19 @@ const load = () => {
 			// Write titles
 			textCtx.textAlign = 'left';
 			if (titleToString()) {
+				const titleSize = 36 * scale;
+				const titleSpacing = -0.3 * scale;
+
 				textCtx.save();
-				textCtx.font = `72px ${textFont}`;
-				//textCtx.font = `36px ${textFont}`;
-				textCtx.letterSpacing = "-0.6px";
-				//textCtx.letterSpacing = "-0.3px";
+				textCtx.font = `${titleSize}px ${textFont}`;
+				textCtx.letterSpacing = `${titleSpacing}px`;
 				const textWidth = textCtx.measureText(titleToString()).width;
-				const xScale = getXScale(textWidth, 2*(700-32));
-				//const xScale = getXScale(textWidth, 700-32);
+				const xScale = getXScale(textWidth, scale*(realTagWidth-32));
 
 				// in game italic value is 0.12
 				textCtx.transform(1, 0, -7.5/100, 1, 0, 0);
 				textCtx.scale(xScale, 1);
-				textCtx.fillText(titleToString(), 18*2 / xScale, 42*2);
+				textCtx.fillText(titleToString(), 18*scale / xScale, 42*scale);
 				textCtx.restore();
 				textCtx.letterSpacing = "0px";
 			}
@@ -167,44 +179,41 @@ const load = () => {
 			// Write tag text (if not empty)
 			if (tag.id.length) {
 				textCtx.save();
-				// textCtx.font = `24px ${textFont}`;
-				// textCtx.letterSpacing = "0.2px";
-				textCtx.font = `48px ${textFont}`;
-				textCtx.letterSpacing = "0.4px";
+				const idSize = 24 * scale;
+				const idSpacing = 0.2 * scale;
+				textCtx.font = `${idSize}px ${textFont}`;
+				textCtx.letterSpacing = `${idSpacing}px`;
 
 				// tag text should adjust to the leftmost badge position.
 				const leftBadge = tag.badges.indexOf(tag.badges.find(b => b !== -1));
-				const maxX = (leftBadge === -1 ? 2*700 : 2*(480 + 74*leftBadge) - 48);
-				//const maxX = (leftBadge === -1 ? 700 : 480 + 74*leftBadge) - 48;
+				const maxX = scale * ((leftBadge === -1 ? realTagWidth : (480 + 74*leftBadge)) - 48);
 				const textWidth = textCtx.measureText(tag.id).width;
 				const xScale = getXScale(textWidth, maxX);
 
 				textCtx.scale(xScale, 1);
-				textCtx.fillText('' + tag.id, 2 * 24 / xScale, 2*185);
+				textCtx.fillText('' + tag.id, scale * 24 / xScale, scale*185);
 				textCtx.restore();
 			}
 
 			// Write player name
 			if (tag.name.length) {
 				textCtx.save();
-				// textCtx.font = `66px ${titleFont}`;
-				// textCtx.letterSpacing = "-0.4px";
-				textCtx.font = `132px ${titleFont}`;
-				textCtx.letterSpacing = "-0.8px";
+				const nameSize = 66 * scale;
+				const nameSpacing = -0.4 * scale;
+				textCtx.font = `${nameSize}px ${titleFont}`;
+				textCtx.letterSpacing = `${nameSpacing}px`;
 				const textWidth = textCtx.measureText(tag.name).width;
-				//const xScale = getXScale(textWidth, 700-32);
-				const xScale = getXScale(textWidth, 2*(700-32));
+				const xScale = getXScale(textWidth, scale*(realTagWidth-32));
 
 				textCtx.textAlign = 'center';
 				textCtx.scale(xScale, 1);
-				textCtx.fillText(tag.name, 2*(700/2-1.5) / xScale, 2*119);
-				//textCtx.fillText(tag.name, (700/2-1.5) / xScale, 119);
+				textCtx.fillText(tag.name, scale*(realTagWidth/2-1.5) / xScale, scale*119);
 
 				textCtx.restore();
 			}
 			
-			ctx.drawImage(textCanvas, 0, 0, 1400, 400);
-			textCtx.clearRect(0, 0, 1400, 400);
+			ctx.drawImage(textCanvas, 0, 0, tagWidth, tagHeight);
+			textCtx.clearRect(0, 0, tagWidth, tagHeight);
 
 			// If the banner name or badge has either "custom" or "data" it is definitely a custom resource
 			let customed = banners[tag.banner]?.custom || false;
@@ -212,7 +221,7 @@ const load = () => {
 			// Draw each badge on the banner
 			for (let i = 0; i < 3; i++) {
 				if (tag.badges[i] !== -1) {
-					const x = 2*(480 + 74*i);
+					const x = scale*(480 + 74*i);
 
 					// Below used to resize custom badges to retain their scale.
 					if (badges[tag.badges[i]].custom) {
@@ -222,19 +231,19 @@ const load = () => {
 						const landscape = cw > ch;
 						const ratio = !landscape ? (cw / ch) : (ch / cw);
 						const width = landscape ? 70 : 70*ratio;
-						width *= 2;
+						width *= scale;
 						const height = !landscape ? 70 : 70*ratio;
-						height *= 2;
-						ctx.drawImage(badges[tag.badges[i]].image, x + 2*(70 / 2 - width / 2), 2*128 + 2*(70 / 2 - height / 2), width, height);
+						height *= scale;
+						ctx.drawImage(badges[tag.badges[i]].image, x + scale*(70 / 2 - width / 2), scale*(128 + (70 / 2 - height / 2)), width, height);
 					} else {
-						ctx.drawImage(badges[tag.badges[i]].image, x, 2*128, 2*70, 2*70);
+						ctx.drawImage(badges[tag.badges[i]].image, x, scale*128, scale*70, scale*70);
 					}
 				}
 			}
 
 			ctx.save();
 			ctx.globalAlpha = 0.2;
-			ctx.drawImage(textCanvas, 0, 0, 1400, 400);
+			ctx.drawImage(textCanvas, 0, 0, tagWidth, tagHeight);
 			ctx.restore();
 		}
 
@@ -396,7 +405,7 @@ const load = () => {
 			return res.json();
 		}).then(data => {
 			Object.assign(lang, data);
-			Object.assign(assetIDs.lang, structuredClone(data));
+			Object.assign(assetIDs.lang, makeClone(data));
 			loadedLanguage();
 		}).catch(err => {
 			alert(`Something went wrong when loading...\n\nIf this problem keeps occurring, contact @spaghettitron on Twitter!\n\n${err.stack}`);
