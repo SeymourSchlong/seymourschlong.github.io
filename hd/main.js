@@ -252,7 +252,7 @@ const load = () => {
 
 			// Draw each badge on the banner
 			for (let i = 0; i < 3; i++) {
-				if (tag.badges[i] !== -1) {
+				if (tag.badges[i] !== -1 || customBadges[i].files[0]) {
 					const badgeSize = scale * 70;
 					const x = scale * (480 + 74*i);
 
