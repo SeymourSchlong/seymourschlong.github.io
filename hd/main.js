@@ -353,7 +353,7 @@ const load = () => {
 				tag.title.last  = lang[langTag].titles.last.indexOf(assetIDs.lang[langTag].titles.last[indexes[1]]);
 			} else {
 				tag.isCustom = true;
-				customcheck.click();
+				//customcheck.click();
 				tag.title.string = decodeURIComponent(params.get("t"));
 			}
 		}
