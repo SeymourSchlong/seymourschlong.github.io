@@ -129,10 +129,10 @@ const load = () => {
 			]
 		}
 
-		const customBg = document.querySelector('#custom-bg');
-		const customBadges = [...document.querySelectorAll('[id*="custom-badge"]')];
+		const customBgInput = document.querySelector('#custom-bg');
+		const customBadgeInput = [...document.querySelectorAll('[id*="custom-badge"]')];
 
-		[customBg, ...customBadges].forEach((uploadElement, i) => {
+		[customBgInput, ...customBadgeInput].forEach((uploadElement, i) => {
 			uploadElement.addEventListener('change', () => {
 				const file = Array.from(uploadElement.files)[0]
 
@@ -161,7 +161,7 @@ const load = () => {
 
 			if (tag.banner < 0 || tag.banner >= assetIDs.banners.length) {
 				// do nothing lol
-			} else if (customBg.files[0]) {
+			} else if (customBgInput.files[0]) {
 				ctx.drawImage(customImages.banner, 0, 0, tagWidth, tagHeight);
 			} else if (!banners[tag.banner].layers) {
 				// If not one of the special "pick your own colour" banners, just draw it
@@ -252,12 +252,12 @@ const load = () => {
 
 			// Draw each badge on the banner
 			for (let i = 0; i < 3; i++) {
-				if (tag.badges[i] !== -1 || customBadges[i].files[0]) {
+				if (tag.badges[i] !== -1 || customBadgeInput[i].files[0]) {
 					const badgeSize = scale * 70;
 					const x = scale * (480 + 74*i);
 
 					// Below used to resize custom badges to retain their scale.
-					if (customBadges[i].files[0]) {
+					if (customBadgeInput[i].files[0]) {
 						const image = customImages.badges[i];
 						const cw = image.naturalWidth;
 						const ch = image.naturalHeight;
@@ -333,7 +333,7 @@ const load = () => {
 		}
 
 		window.banners = banners;
-
+		window.badges = badges;
 
 		// Loading in tags from param info.
 		// Name
