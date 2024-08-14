@@ -72,18 +72,24 @@ body {
 
 .badge-container {
     display: flex;
-    width: 75%;
     margin: auto;
     padding-top: 20px;
     padding-bottom: 20px;
+    flex-direction: column;
+    width: fit-content;
 }
 
 .badge-container:not(:first-child) {
-    border-top: 2px solid #ffffff66;
+    -border-top: 2px solid #ffffff66;
 }
 
 #list-of-badges {
     margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .badge-image {
@@ -92,6 +98,7 @@ body {
     border-radius: 10px;
 }
 .badge-canvas {
+    width: calc(208px - 80px);
     padding: 40px;
     background-image: url("./assets/images/badge_container.png");
     background-size: cover;
@@ -121,8 +128,11 @@ body {
     vertical-align: middle;
 }
 
-#list-of-badges:empty::after {
+#list-of-badges:empty::before {
     content: "Upload an image to get started!";
+    display: block;
+    margin: auto;
+    text-align: center;
 }
 
 .delete-button, .save-button {
@@ -144,5 +154,5 @@ body {
 }
 .save-button {
     background-image: url("./assets/images/download.svg");
-    --translation: translate(128px, 128px);
+    --translation: translate(128px, 0px);
 }

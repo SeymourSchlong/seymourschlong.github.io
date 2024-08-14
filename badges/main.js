@@ -406,7 +406,7 @@ const load = () => {
 
 		// BRIGHTNESS SLIDER
 		const brightnessDiv = document.createElement('div');
-		brightnessDiv.textContent = 'Brightness: ';
+		brightnessDiv.textContent = 'Bright: ';
 		const brightnessSlider = document.createElement('input');
 		brightnessSlider.type = 'range';
 		brightnessSlider.step = 1;
