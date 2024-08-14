@@ -140,8 +140,6 @@ const brightenImage = (gctx, value) => {
 const applyContrast = (gctx, value) => {
 	if (value == 1) return;
 
-	console.log(value);
-
 	gctx.save();
 	gctx.filter = `contrast(${value})`;
 	gctx.globalCompositeOperation = 'copy';
@@ -298,8 +296,63 @@ const drawWithSettings = (ctx, buffer, options) => {
 	buffer.clearRect(0, 0, buffer.canvas.width, buffer.canvas.height);
 
 	// Draw the original image
-	// buffer.drawImage(OGimage, 20, 20, canvas.width - 40, canvas.height - 40);
-	buffer.drawImage(options.image, 0, 0, ctx.canvas.width, ctx.canvas.height);
+
+	if (options.firstGeneration) {
+		const bounds = { xMin: 128, yMin: 128, xMax: 0, yMax: 0 };
+
+		options.cached.scaled.canvas.width = options.image.width;
+		options.cached.scaled.canvas.height = options.image.height;
+		options.cached.scaled.drawImage(options.image, 0, 0);
+
+		if (options.image.width <= 108 && options.image.height <= 108) {
+			bounds.xMin = Math.floor(64 - options.image.width / 2);
+			bounds.yMin = Math.floor(64 - options.image.height / 2);
+			bounds.xMax = bounds.xMin + options.image.width;
+			bounds.yMax = bounds.yMin + options.image.height;
+		} else {
+			const pixels = options.cached.scaled.getImageData(0, 0, options.image.width, options.image.height);
+
+			for (let y = 0; y < options.image.height; y++) {
+				for (let x = 0; x < options.image.width; x++) {
+					const index = (y*options.image.width + x) * channels;
+
+					const pixelFound = pixels.data[index] || pixels.data[index+1] || pixels.data[index+2] || pixels.data[index+3];
+
+					if (pixelFound) {
+						bounds.xMin = Math.min(x, bounds.xMin);
+						bounds.yMin = Math.min(y, bounds.yMin);
+						bounds.xMax = Math.max(x, bounds.xMax);
+						bounds.yMax = Math.max(y, bounds.yMax);
+					}
+				}
+			}
+
+			if (bounds.xMin > bounds.xMax) bounds.xMin = 0;
+			if (bounds.yMin > bounds.yMax) bounds.yMin = 0;
+
+			const croppedPixels = options.cached.scaled.getImageData(bounds.xMin, bounds.yMin, bounds.xMax, bounds.yMax);
+			options.cached.scaled.clearRect(0, 0, options.image.width, options.image.height);
+
+			const borderWidth = 20;
+			const borderRatio = borderWidth / 128;
+
+			const imageWidth = bounds.xMax - bounds.xMin;
+			const imageHeight = bounds.yMax - bounds.yMin;
+
+			const isPortrait = imageHeight > imageWidth;
+			const padding = (isPortrait ? imageHeight : imageWidth) * (borderRatio)
+
+			options.cached.scaled.canvas.width = options.cached.scaled.canvas.height = Math.round((isPortrait ? imageHeight : imageWidth) + (padding*2));
+			options.cached.scaled.putImageData(croppedPixels,
+				isPortrait ? options.cached.scaled.canvas.width/2 - imageWidth/2 : padding,
+				!isPortrait ? options.cached.scaled.canvas.height/2 - imageHeight/2 : padding
+			);
+
+
+		}
+	}
+
+	buffer.drawImage(options.cached.scaled.canvas, 0, 0, 128, 128);
 
 	// generate the outlines
 	if (options.firstGeneration) {
@@ -382,6 +435,7 @@ const load = () => {
 
 		const outlineColour = document.createElement('canvas').getContext('2d');
 		const outlineWhite = document.createElement('canvas').getContext('2d');
+		const scaledImage = document.createElement('canvas').getContext('2d');
 
 		badgeCanvas.appendChild(image);
 		image.style = 'display: none';
@@ -416,7 +470,7 @@ const load = () => {
 			cached: {
 				colour: outlineColour,
 				white: outlineWhite,
-				glow: undefined
+				scaled: scaledImage
 			}
 		}
 
@@ -439,8 +493,6 @@ const load = () => {
 		
 
 		// BRIGHTNESS SLIDER
-		//const brightnessDiv = document.createElement('div');
-		//brightnessDiv.textContent = 'Bright: ';
 		const brightnessSlider = document.createElement('input');
 		brightnessSlider.type = 'range';
 		brightnessSlider.step = 1;
@@ -449,8 +501,6 @@ const load = () => {
 		brightnessSlider.value = 100;
 		brightnessSlider.setAttribute('list', 'half');
 		brightnessSlider.title = 'Brightness';
-		//brightnessDiv.appendChild(brightnessSlider);
-		//badgeSettings.appendChild(brightnessDiv);
 		badgeCanvas.appendChild(brightnessSlider);
 
 		brightnessSlider.oninput = () => {
@@ -459,18 +509,13 @@ const load = () => {
 		}
 
 		// CONTRAST SLIDER
-		//const brightnessDiv = document.createElement('div');
-		//brightnessDiv.textContent = 'Bright: ';
 		const contrastSlider = document.createElement('input');
 		contrastSlider.type = 'range';
 		contrastSlider.step = 0.01;
 		contrastSlider.min = 1;
 		contrastSlider.max = 2;
 		contrastSlider.value = 1;
-		//contrastSlider.setAttribute('list', 'half');
 		contrastSlider.title = 'Contrast';
-		//brightnessDiv.appendChild(contrastSlider);
-		//badgeSettings.appendChild(brightnessDiv);
 		badgeCanvas.appendChild(contrastSlider);
 
 		contrastSlider.oninput = () => {
@@ -485,23 +530,6 @@ const load = () => {
 
 			drawWithSettings(ctx, ctxBuffer, options);
 		}
-
-		// SHINE APPLIED
-		// const shineLabel = document.createElement('label');
-		// shineLabel.textContent = 'Shine Applied: ';
-		// const shineInput = document.createElement('input');
-		// shineInput.type = 'checkbox';
-		// shineInput.checked = true;
-		// shineLabel.appendChild(shineInput);
-		// badgeSettings.appendChild(shineLabel);
-
-		// shineInput.onchange = () => {
-		// 	options.shine = shineInput.checked;
-		// 	drawWithSettings(ctx, ctxBuffer, options);
-		// }
-		
-		// BORDER SOFTNESS
-
 
 
 		// DELETE BUTTON
