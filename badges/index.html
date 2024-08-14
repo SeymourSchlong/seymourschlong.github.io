@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Badge Creator</title>
+        <meta name="theme-color" content="#ffff00">
+        <meta property="og:title" content="Badge Creator">
+        <meta name="og:type" content="website">
+        <meta name="description" content="Custom Splatoon 3 Badge Creator.">
+        <meta name="og:description" content="Custom Splatoon 3 Badge Creator.">
+        <meta property="og:image" content="https://seymourschlong.github.io/splashtags/assets/images/ico.png">
+        <link rel="icon" href="assets/images/ico.png">
+        <script type="text/javascript" src="main.js"></script>
+        <link rel="stylesheet" href="style.css">
+        
+        <link rel="preload" href="assets/fonts/SplatoonText.otf" as="font" type="font/otf" crossorigin>
+        <link rel="preload" href="assets/fonts/SplatoonTitle.otf" as="font" type="font/otf" crossorigin>
+    </head>
+    <body onload="load();">
+        <div class="sitecontent">
+            <br>
+            <div id="container">
+                <div id="main" class="">
+                    <span class="title-font" style="font-size: 40px;">Badge Creator</span>
+                    <br><br>
+                    <label>
+                        <div class="upload-file">
+                            <img src="./assets/images/upload.png"> <span>Upload file</span>
+                        </div>
+                        <input type="file" style="display: none;" multiple="" accept="image/*" id="upload">
+                    </label>
+
+                    <div id="list-of-badges"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

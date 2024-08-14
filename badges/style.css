@@ -1,0 +1,148 @@
+@font-face {
+    font-family: "Splat-title";
+    src: url("./assets/fonts/SplatoonTitle.otf");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Splat-text";
+    src: url("./assets/fonts/SplatoonText.otf");
+    font-style: normal;
+    font-weight: normal;
+}
+
+body, select, input {
+    font-family: 'Splat-text';
+}
+
+.tab, .category-title, .title-font, .saved-tag {
+    font-family: 'Splat-title';
+}
+
+html {
+    height: 100%;
+}
+
+
+body {
+    background-color: #1e1e1e;
+    color: white;
+    font-size: 20px;
+
+    position: relative;
+    min-height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    background-image: url("./assets/images/bg_a.png");
+    background-size: cover;
+    background-position: fixed;
+}
+
+@keyframes bganim {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 512px 256px;
+    }
+}
+
+#container, #main {
+    text-align: center;
+    user-select: none;
+}
+
+#main {
+    background-image: url("./assets/images/title_bg.png"), url("./assets/images/main-bg-top.png"), url("./assets/images/main-bg-middle.png"), url("./assets/images/main-bg-bottom.png");
+    background-repeat: no-repeat;
+    background-position: center top, top, center 45px, bottom;
+    background-size: auto, 100% 45px, 100% calc(100% - 145px), 100% 100px;
+    height: autopx;
+    width: 856px;
+    margin: auto;
+    -transition: .3s linear;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+
+    padding-top: 10px;
+    padding-bottom: 50px;
+}
+
+.badge-container {
+    display: flex;
+    width: 75%;
+    margin: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.badge-container:not(:first-child) {
+    border-top: 2px solid #ffffff66;
+}
+
+#list-of-badges {
+    margin-top: 40px;
+}
+
+.badge-image {
+    background-image: url("./assets/images/squidbg.png");
+    animation: bganim 120s linear infinite;
+    border-radius: 10px;
+}
+.badge-canvas {
+    padding: 40px;
+    background-image: url("./assets/images/badge_container.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.badge-settings, .upload-file {
+    width: 75%;
+    margin: auto;
+}
+
+.upload-file {
+    border: 2px dashed gray;
+    border-radius: 20px;
+    padding: 10px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.upload-file img {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+.upload-file span {
+    vertical-align: middle;
+}
+
+#list-of-badges:empty::after {
+    content: "Upload an image to get started!";
+}
+
+.delete-button, .save-button {
+    width: 32px;
+    height: 32px;
+    background-size: contain;
+    position: absolute;
+    transform: var(--translation);
+    transition: 0.1s;
+}
+
+.delete-button:hover, .save-button:hover {
+    transform: var(--translation) scale(1.4);
+}
+
+.delete-button {
+    background-image: url("./assets/images/delete.svg");
+    --translation: translate(128px, -32px);
+}
+.save-button {
+    background-image: url("./assets/images/download.svg");
+    --translation: translate(128px, 128px);
+}
