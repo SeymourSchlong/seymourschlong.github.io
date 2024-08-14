@@ -87,6 +87,8 @@ shineImageB.src	= "./assets/images/shineB.png";
 
 const channels = 4;
 
+let delay = 0;
+
 const grayscaleHue = (gctx) => {
 	const imageData = gctx.getImageData(0, 0, gctx.canvas.width, gctx.canvas.height);
 
@@ -129,19 +131,30 @@ const grayscaleAverage = (gctx) => {
 const brightenImage = (gctx, value) => {
 	if (value == 1) return;
 
-	const shade = value > 1 ? '#ffffff' : '#000000';
-
-	value = Math.round(Math.abs(value-1) * 256);
+	const brightenedImage = document.createElement('canvas').getContext('2d');
 
 	gctx.save();
-	gctx.fillStyle = shade + value.toString(16).padStart(2, "0");
+	gctx.filter = `brightness(${value})`;
+	brightenedImage.drawImage(gctx.canvas, 0, 0);
+	gctx.filter = '';
 
-	console.log(gctx.fillStyle);
-
-	gctx.globalCompositeOperation = 'source-atop';
-	gctx.fillRect(0, 0, gctx.canvas.width, gctx.canvas.height);
-	gctx.globalCompositeOperation = 'source-over';
+	gctx.globalCompositeOperation = 'copy';
+	gctx.drawImage(brightenedImage.canvas, 0, 0);
 	gctx.restore();
+
+	// const shade = value > 1 ? '#ffffff' : '#000000';
+
+	// value = Math.round(Math.abs(value-1) * 255);
+
+	// console.log(value);
+
+	// gctx.save();
+	// gctx.fillStyle = shade + value.toString(16).padStart(2, "0");
+
+	// gctx.globalCompositeOperation = 'source-atop';
+	// gctx.fillRect(0, 0, gctx.canvas.width, gctx.canvas.height);
+	// gctx.globalCompositeOperation = 'source-over';
+	// gctx.restore();
 }
 const applyGradientMap = (gctx, gradient) => {
 	if (!gradient) return;
@@ -199,11 +212,6 @@ const outlineImage = (octx, colour = '#000000', size = 5, threshold = 0, softnes
 
 	// iterate through each pixel
 	for (let i = 0; i < pixels.data.length; i += channels) {
-		const r = pixels.data[i],
-			g = pixels.data[i+1],
-			b = pixels.data[i+2],
-			a = pixels.data[i+3];
-
 		const x = (i / channels) % octx.canvas.width;
 		const y = Math.floor((i / channels) / octx.canvas.width);
 
@@ -252,22 +260,13 @@ const outlineImage = (octx, colour = '#000000', size = 5, threshold = 0, softnes
 
 				const index = coordToIndex(targetCoord, outCanvas.width) * channels;
 
-				// outPixels.data[index+3] = Math.max(outPixels.data[index+3], highestValueFound);
+				outPixels.data[index] = outPixels.data[index+1] = outPixels.data[index+2] = 255;
 				outPixels.data[index+3] = Math.round(Math.min(outPixels.data[index+3]+ highestValueFound/softness, 255));
 			}
 		}
 	}
 
-	outCtx.putImageData(outPixels, 0, 0);
-
-	outCtx.globalCompositeOperation = "source-in";
-	outCtx.fillStyle = colour;
-	outCtx.fillRect(0, 0, octx.canvas.width, octx.canvas.height);
-	outCtx.globalCompositeOperation = "source-over";
-
-	octx.globalCompositeOperation = "destination-over";
-	octx.drawImage(outCanvas, 0, 0);
-	octx.globalCompositeOperation = "source-over";
+	return outPixels;
 }
 const applyGlow = (gctx, colour = '#000000') => {
 	const glowCanvas = document.createElement('canvas');
@@ -296,12 +295,26 @@ const applyGlow = (gctx, colour = '#000000') => {
 }
 
 const drawWithSettings = (ctx, buffer, options) => {
+	if (delay) {
+		setTimeout(() => {
+			delay--;
+			drawWithSettings();
+		}, 10);
+	}
+
 	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 	buffer.clearRect(0, 0, buffer.canvas.width, buffer.canvas.height);
 
 	// Draw the original image
 	// buffer.drawImage(OGimage, 20, 20, canvas.width - 40, canvas.height - 40);
 	buffer.drawImage(options.image, 0, 0, ctx.canvas.width, ctx.canvas.height);
+
+	// generate the 
+	if (options.firstGeneration) {
+		options.cached.colour.putImageData(outlineImage(buffer, '', 5, 0, options.softness), 0, 0);
+		options.cached.white.putImageData(outlineImage(options.cached.colour, '', 5, 0, options.softness), 0, 0);
+		options.firstGeneration = false;
+	}
 
 	// Apply Grayscale Filter
 	if (options.gradient) {
@@ -332,8 +345,18 @@ const drawWithSettings = (ctx, buffer, options) => {
 	}
 
 	// Outline the image
-	outlineImage(buffer, options.gradient ? options.gradient.border : '#262626', 5, 0, options.softness);
-	outlineImage(buffer, '#ffffff', 5, 0, options.softness);
+	options.cached.colour.globalCompositeOperation = "source-in";
+	options.cached.colour.fillStyle = options.gradient ? options.gradient.border : '#262626';
+	options.cached.colour.fillRect(0, 0, options.cached.colour.canvas.width, options.cached.colour.canvas.height);
+	options.cached.colour.globalCompositeOperation = "source-over";
+
+	buffer.globalCompositeOperation = "destination-over";
+	buffer.drawImage(options.cached.colour.canvas, 0, 0);
+	buffer.drawImage(options.cached.white.canvas, 0, 0);
+	buffer.globalCompositeOperation = "source-over";
+
+	//outlineImage(buffer, options.gradient ? options.gradient.border : '#262626', 5, 0, options.softness);
+	//outlineImage(buffer, '#ffffff', 5, 0, options.softness);
 
 	ctx.drawImage(buffer.canvas, 0, 0);
 
@@ -364,11 +387,26 @@ const load = () => {
 		canvasBuffer.height = canvas.height;
 		const ctxBuffer = canvasBuffer.getContext('2d');
 
+		const outlineColour = document.createElement('canvas').getContext('2d');
+		const outlineWhite = document.createElement('canvas').getContext('2d');
+
 		badgeCanvas.appendChild(image);
 		image.style = 'display: none';
 
 		const badgeSettings = document.createElement('div');
 		badgeSettings.className = 'badge-settings';
+		
+		const saveLink = document.createElement('a');
+		const deleteButton = document.createElement('div');
+		badgeCanvas.appendChild(saveLink);
+		badgeCanvas.appendChild(deleteButton);
+
+		parent.appendChild(badgeCanvas);
+		badgeCanvas.appendChild(canvas);
+
+		parent.appendChild(badgeSettings);
+
+		mainContainer.appendChild(parent);
 
 		const options = {
 			image: image,
@@ -379,7 +417,13 @@ const load = () => {
 			size: { x: 128, y: 128},
 			gradient: gold,
 			grayscale: 0,
-			saveLink: undefined
+			saveLink: undefined,
+			firstGeneration: true,
+			cached: {
+				colour: outlineColour,
+				white: outlineWhite,
+				glow: undefined
+			}
 		}
 
 		// BADGE TYPE
@@ -396,28 +440,31 @@ const load = () => {
 		});
 
 		typeDropdown.selectedIndex = 2;
-
-		typeDropdown.onchange = () => {
-			options.gradient = [undefined, silver, gold][typeDropdown.selectedIndex];
-			drawWithSettings(ctx, ctxBuffer, options);
-			console.log(options);
-		}
 		
 
 		// BRIGHTNESS SLIDER
-		const brightnessDiv = document.createElement('div');
-		brightnessDiv.textContent = 'Bright: ';
+		//const brightnessDiv = document.createElement('div');
+		//brightnessDiv.textContent = 'Bright: ';
 		const brightnessSlider = document.createElement('input');
 		brightnessSlider.type = 'range';
 		brightnessSlider.step = 1;
 		brightnessSlider.min = 0;
 		brightnessSlider.max = 200;
 		brightnessSlider.value = 100;
-		brightnessDiv.appendChild(brightnessSlider);
-		badgeSettings.appendChild(brightnessDiv);
+		//brightnessDiv.appendChild(brightnessSlider);
+		//badgeSettings.appendChild(brightnessDiv);
+		badgeCanvas.appendChild(brightnessSlider);
 
-		brightnessSlider.onchange = () => {
+		brightnessSlider.oninput = () => {
 			options.brightness = brightnessSlider.value / 100;
+			drawWithSettings(ctx, ctxBuffer, options);
+		}
+		
+
+		typeDropdown.onchange = () => {
+			options.gradient = [undefined, silver, gold][typeDropdown.selectedIndex];
+			brightnessSlider.disabled = !typeDropdown.selectedIndex;
+
 			drawWithSettings(ctx, ctxBuffer, options);
 		}
 
@@ -440,33 +487,21 @@ const load = () => {
 
 
 		// DELETE BUTTON
-		const deleteButton = document.createElement('div');
 		deleteButton.className = 'delete-button';
 		deleteButton.title = 'Delete';
-		badgeCanvas.appendChild(deleteButton);
 
 		deleteButton.addEventListener('click', () => {
 			parent.parentNode.removeChild(parent);
 		});
 
 		// SAVE BUTTON
-		const saveLink = document.createElement('a');
 		saveLink.download = 'badge.png';
 		const saveButton = document.createElement('div');
 		saveButton.className = 'save-button';
 		saveButton.title = 'Download';
 		saveLink.appendChild(saveButton);
-		badgeCanvas.appendChild(saveLink);
 
 		options.saveLink = saveLink;
-		
-
-		parent.appendChild(badgeCanvas);
-		badgeCanvas.appendChild(canvas);
-
-		parent.appendChild(badgeSettings);
-
-		mainContainer.appendChild(parent);
 
 		drawWithSettings(ctx, ctxBuffer, options);
 	}
