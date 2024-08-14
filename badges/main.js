@@ -131,30 +131,22 @@ const grayscaleAverage = (gctx) => {
 const brightenImage = (gctx, value) => {
 	if (value == 1) return;
 
-	const brightenedImage = document.createElement('canvas').getContext('2d');
-
 	gctx.save();
 	gctx.filter = `brightness(${value})`;
-	brightenedImage.drawImage(gctx.canvas, 0, 0);
-	gctx.filter = '';
-
 	gctx.globalCompositeOperation = 'copy';
-	gctx.drawImage(brightenedImage.canvas, 0, 0);
+	gctx.drawImage(gctx.canvas, 0, 0);
 	gctx.restore();
+}
+const applyContrast = (gctx, value) => {
+	if (value == 1) return;
 
-	// const shade = value > 1 ? '#ffffff' : '#000000';
+	console.log(value);
 
-	// value = Math.round(Math.abs(value-1) * 255);
-
-	// console.log(value);
-
-	// gctx.save();
-	// gctx.fillStyle = shade + value.toString(16).padStart(2, "0");
-
-	// gctx.globalCompositeOperation = 'source-atop';
-	// gctx.fillRect(0, 0, gctx.canvas.width, gctx.canvas.height);
-	// gctx.globalCompositeOperation = 'source-over';
-	// gctx.restore();
+	gctx.save();
+	gctx.filter = `contrast(${value})`;
+	gctx.globalCompositeOperation = 'copy';
+	gctx.drawImage(gctx.canvas, 0, 0);
+	gctx.restore();
 }
 const applyGradientMap = (gctx, gradient) => {
 	if (!gradient) return;
@@ -309,7 +301,7 @@ const drawWithSettings = (ctx, buffer, options) => {
 	// buffer.drawImage(OGimage, 20, 20, canvas.width - 40, canvas.height - 40);
 	buffer.drawImage(options.image, 0, 0, ctx.canvas.width, ctx.canvas.height);
 
-	// generate the 
+	// generate the outlines
 	if (options.firstGeneration) {
 		options.cached.colour.putImageData(outlineImage(buffer, '', 5, 0, options.softness), 0, 0);
 		options.cached.white.putImageData(outlineImage(options.cached.colour, '', 5, 0, options.softness), 0, 0);
@@ -326,6 +318,7 @@ const drawWithSettings = (ctx, buffer, options) => {
 
 		// Apply a slight brightness to the image (if necessary)
 		brightenImage(buffer, options.brightness);
+		applyContrast(buffer, options.contrast);
 	
 		// Draw the initial shine over (applied before gradient map)
 		buffer.globalCompositeOperation = 'source-atop';
@@ -411,6 +404,7 @@ const load = () => {
 		const options = {
 			image: image,
 			brightness: 1,
+			contrast: 1,
 			shine: true,
 			softness: 2,
 			position: { x: 0, y: 0 },
@@ -425,6 +419,8 @@ const load = () => {
 				glow: undefined
 			}
 		}
+
+		canvas._o = options;
 
 		// BADGE TYPE
 		const typeLabel = document.createElement('label');
@@ -452,6 +448,7 @@ const load = () => {
 		brightnessSlider.max = 200;
 		brightnessSlider.value = 100;
 		brightnessSlider.setAttribute('list', 'half');
+		brightnessSlider.title = 'Brightness';
 		//brightnessDiv.appendChild(brightnessSlider);
 		//badgeSettings.appendChild(brightnessDiv);
 		badgeCanvas.appendChild(brightnessSlider);
@@ -460,11 +457,31 @@ const load = () => {
 			options.brightness = brightnessSlider.value / 100;
 			drawWithSettings(ctx, ctxBuffer, options);
 		}
+
+		// CONTRAST SLIDER
+		//const brightnessDiv = document.createElement('div');
+		//brightnessDiv.textContent = 'Bright: ';
+		const contrastSlider = document.createElement('input');
+		contrastSlider.type = 'range';
+		contrastSlider.step = 0.01;
+		contrastSlider.min = 1;
+		contrastSlider.max = 2;
+		contrastSlider.value = 1;
+		//contrastSlider.setAttribute('list', 'half');
+		contrastSlider.title = 'Contrast';
+		//brightnessDiv.appendChild(contrastSlider);
+		//badgeSettings.appendChild(brightnessDiv);
+		badgeCanvas.appendChild(contrastSlider);
+
+		contrastSlider.oninput = () => {
+			options.contrast = contrastSlider.value;
+			drawWithSettings(ctx, ctxBuffer, options);
+		}
 		
 
 		typeDropdown.onchange = () => {
 			options.gradient = [undefined, silver, gold][typeDropdown.selectedIndex];
-			brightnessSlider.disabled = !typeDropdown.selectedIndex;
+			brightnessSlider.disabled = contrastSlider.disabled = !typeDropdown.selectedIndex;
 
 			drawWithSettings(ctx, ctxBuffer, options);
 		}
