@@ -451,6 +451,7 @@ const load = () => {
 		brightnessSlider.min = 0;
 		brightnessSlider.max = 200;
 		brightnessSlider.value = 100;
+		brightnessSlider.setAttribute('list', 'half');
 		//brightnessDiv.appendChild(brightnessSlider);
 		//badgeSettings.appendChild(brightnessDiv);
 		badgeCanvas.appendChild(brightnessSlider);
