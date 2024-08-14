@@ -101,7 +101,7 @@ body {
     width: calc(208px - 80px);
     padding: 40px;
     background-image: url("./assets/images/badge_container.png");
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
 
     display: flex;

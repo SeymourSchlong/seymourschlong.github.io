@@ -243,8 +243,8 @@ const outlineImage = (octx, colour = '#000000', size = 5, threshold = 0, softnes
 					x: coord.x + x,
 					y: coord.y + y
 				}
-				if (targetCoord.x < 0 || targetCoord.x > outCanvas.width) continue;
-				if (targetCoord.y < 0 || targetCoord.y > outCanvas.height) continue;
+				if (targetCoord.x < 0 || targetCoord.x >= outCanvas.width) continue;
+				if (targetCoord.y < 0 || targetCoord.y >= outCanvas.height) continue;
 
 				const hypotenuse = coord.x*coord.x + coord.y*coord.y;
 
