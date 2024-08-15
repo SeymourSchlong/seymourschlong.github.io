@@ -309,6 +309,10 @@ const drawWithSettings = (ctx, buffer, options) => {
 			bounds.yMin = Math.floor(64 - options.image.height / 2);
 			bounds.xMax = bounds.xMin + options.image.width;
 			bounds.yMax = bounds.yMin + options.image.height;
+			
+			options.cached.scaled.clearRect(0, 0, options.image.width, options.image.height);
+			options.cached.scaled.canvas.width = options.cached.scaled.canvas.height = 128;
+			options.cached.scaled.drawImage(options.image, bounds.xMin, bounds.yMin, bounds.xMax - bounds.xMin, bounds.yMax - bounds.yMin);
 		} else {
 			const pixels = options.cached.scaled.getImageData(0, 0, options.image.width, options.image.height);
 
