@@ -404,7 +404,7 @@ const load = () => {
 		});
 	}
 
-	fetch(`https://seymourschlong.github.io/splashtags/assets.json?cb=${cb}`).then(res => {
+	fetch(`https://splashtagmaker.com/assets.json?cb=${cb}`).then(res => {
 		return res.json();
 	}).then(data => {
 		const toBadgeObject = (arr) => {
@@ -436,7 +436,7 @@ const load = () => {
 
 		Object.assign(assetIDs, data.ids);
 
-		fetch(`https://seymourschlong.github.io/splashtags/lang.json`).then(res => {
+		fetch(`https://splashtagmaker.com/lang.json`).then(res => {
 			return res.json();
 		}).then(data => {
 			Object.assign(lang, data);
