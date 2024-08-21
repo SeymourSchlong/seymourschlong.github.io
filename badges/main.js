@@ -310,7 +310,7 @@ const applyGlow = (gctx, colour = '#000000') => {
 
 	// blur the image (somehow?)
 	gctx.save();
-	gctx.filter = 'blur(3px)';
+	gctx.filter = 'blur(2px)';
 	gctx.globalCompositeOperation = 'source-atop';
 	gctx.drawImage(glowCanvas, 0, 0);
 	gctx.globalCompositeOperation = 'source-over';
@@ -622,5 +622,4 @@ const load = () => {
 	uploadInput.addEventListener('change', () => {
 		uploadFiles();
 	});
-	
 }
