@@ -1,35 +1,71 @@
 const hexToDec = (h) => {
+	return parseInt(h, 16);
+}
+const decToHex = (colour) => {
+	colour.toString(16).padEnd(2, '0')
+}
+const hexToRgb = (h) => {
 	h = h.replace('#', '');
 	let red, green, blue, alpha;
 	
 	if (h.length <= 4) {
-		red		= parseInt(h[0]+h[0], 16);
-		green	= parseInt(h[1]+h[1], 16);
-		blue	= parseInt(h[2]+h[2], 16);
-		alpha	= h.length == 4 ? parseInt(h[3]+h[3], 16) : 'ff';
+		red		= hexToDec(h[0]+h[0]);
+		green	= hexToDec(h[1]+h[1]);
+		blue	= hexToDec(h[2]+h[2]);
+		alpha	= h.length == 4 ? hexToDec(h[3]+h[3]) : 'ff';
 	} else {
-		red		= parseInt(h[0]+h[1], 16);
-		green	= parseInt(h[2]+h[3], 16);
-		blue	= parseInt(h[4]+h[5], 16);
-		alpha	= h.length == 8 ? parseInt(h[4]+h[5], 16) : 'ff';
+		red		= hexToDec(h[0]+h[1]);
+		green	= hexToDec(h[2]+h[3]);
+		blue	= hexToDec(h[4]+h[5]);
+		alpha	= h.length == 8 ? hexToDec(h[4]+h[5]) : 'ff';
 	}
 
 	return { r: red, g: green, b: blue, a: alpha };
 }
+const rgbToHex = (colour) => {
+	return '#'
+	+ decToHex(colour.r)
+	+ decToHex(colour.g)
+	+ decToHex(colour.b);
+}
 
 class Gradient {
 	list = [];
+	mainPoints = [];
 	border = '#ffffff';
 	glow = '#000000';
 	addColour(index, colour) {
-		index = Math.round(index);
-		this.list[index] = colour;
+		this.mainPoints.push({
+			index: Math.round(index),
+			colour: colour
+		});
+
+		this.fillGradient();
+	}
+	changeIndex(id, newIndex) {
+		this.mainPoints[id].index = newIndex;
+
+		this.fillGradient();
+	}
+	changeColour(id, newColour) {
+		this.mainPoints[id].colour = newColour;
+
+		this.fillGradient();
 	}
 	constructor(border, glow) {
 		this.border = border;
 		this.glow = glow;
 	}
 	fillGradient() {
+		this.list = new Array(256);
+
+		this.mainPoints.forEach(point => {
+			this.list[point.index] = point.colour;
+		});
+
+		this.list[0]	= this.list[0]		|| this.list.find(v => v);
+		this.list[255]	= this.list[255]	|| this.list.findLast(v => v);
+
 		// Finds the next index with a colour entry.
 		const findNextEntry = (startingFrom) => {
 			for (let i = startingFrom; i < 256; i++) {
@@ -61,24 +97,22 @@ class Gradient {
 }
 
 const gold = new Gradient('#9d3801', '#FFFFD6');
-gold.addColour(0.00 * 255,	hexToDec('551801'));
-gold.addColour(0.29 * 255,	hexToDec('551801'));
-gold.addColour(0.43 * 255,	hexToDec('b13600'));
-gold.addColour(0.57 * 255,	hexToDec('c57100'));
-gold.addColour(0.72 * 255,	hexToDec('eea604'));
-gold.addColour(0.84 * 255,	hexToDec('fffd03'));
-gold.addColour(1.00 * 255,	hexToDec('ffffba'));
-gold.fillGradient();
+gold.addColour(0.00 * 255,	hexToRgb('551801'));
+gold.addColour(0.29 * 255,	hexToRgb('551801'));
+gold.addColour(0.43 * 255,	hexToRgb('b13600'));
+gold.addColour(0.57 * 255,	hexToRgb('c57100'));
+gold.addColour(0.72 * 255,	hexToRgb('eea604'));
+gold.addColour(0.84 * 255,	hexToRgb('fffd03'));
+gold.addColour(1.00 * 255,	hexToRgb('ffffba'));
 
 const silver = new Gradient('#4b536e', '#F6FCF6');
-silver.addColour(0.00 * 255,	hexToDec('2e3649'));
-silver.addColour(0.27 * 255,	hexToDec('2e3649'));
-silver.addColour(0.50 * 255,	hexToDec('617798'));
-silver.addColour(0.66 * 255,	hexToDec('95a8bf'));
-silver.addColour(0.74 * 255,	hexToDec('a8b8d0'));
-silver.addColour(0.87 * 255,	hexToDec('d5f3f0'));
-silver.addColour(1.00 * 255,	hexToDec('d6f6e8'));
-silver.fillGradient();
+silver.addColour(0.00 * 255,	hexToRgb('2e3649'));
+silver.addColour(0.27 * 255,	hexToRgb('2e3649'));
+silver.addColour(0.50 * 255,	hexToRgb('617798'));
+silver.addColour(0.66 * 255,	hexToRgb('95a8bf'));
+silver.addColour(0.74 * 255,	hexToRgb('a8b8d0'));
+silver.addColour(0.87 * 255,	hexToRgb('d5f3f0'));
+silver.addColour(1.00 * 255,	hexToRgb('d6f6e8'));
 
 const shineImageA = new Image();
 const shineImageB = new Image();
@@ -374,8 +408,8 @@ const drawWithSettings = (ctx, buffer, options) => {
 		}
 
 		// Apply a slight brightness to the image (if necessary)
-		brightenImage(buffer, options.brightness);
 		applyContrast(buffer, options.contrast);
+		brightenImage(buffer, options.brightness);
 	
 		// Draw the initial shine over (applied before gradient map)
 		buffer.globalCompositeOperation = 'source-atop';

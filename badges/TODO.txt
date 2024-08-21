@@ -1,3 +1,0 @@
-- do not automatically try to fill canvas with image. check for scale.
-- if an image is pushed up against the border, shrink it by 10px in all directions
-- add contrast slider.
