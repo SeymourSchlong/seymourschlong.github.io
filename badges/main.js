@@ -535,7 +535,7 @@ const load = () => {
 			option.textContent = entry;
 		});
 
-		typeDropdown.selectedIndex = 2;
+		typeDropdown.selectedIndex = 0;
 		
 
 		// BRIGHTNESS SLIDER
