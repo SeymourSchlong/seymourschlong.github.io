@@ -508,7 +508,7 @@ const load = () => {
 			softness: 2,
 			position: { x: 0, y: 0 },
 			size: { x: 128, y: 128},
-			gradient: gold,
+			gradient: undefined,
 			grayscale: 0,
 			saveLink: undefined,
 			firstGeneration: true,
