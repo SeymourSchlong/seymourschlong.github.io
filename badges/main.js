@@ -116,8 +116,10 @@ silver.addColour(1.00 * 255,	hexToRgb('d6f6e8'));
 
 const shineImageA = new Image();
 const shineImageB = new Image();
+const weaponSplash = new Image();
 shineImageA.src	= "./assets/images/shineA.png";
 shineImageB.src	= "./assets/images/shineB.png";
+weaponSplash.src	= "./assets/images/gold.png";
 
 const channels = 4;
 
@@ -436,6 +438,11 @@ const drawWithSettings = (ctx, buffer, options) => {
 
 	buffer.globalCompositeOperation = "destination-over";
 	buffer.drawImage(options.cached.colour.canvas, 0, 0);
+
+	if (options.isWeapon) {
+		buffer.drawImage(weaponSplash, 0, 0);
+	}
+
 	buffer.drawImage(options.cached.white.canvas, 0, 0);
 	buffer.globalCompositeOperation = "source-over";
 
@@ -509,7 +516,8 @@ const load = () => {
 				colour: outlineColour,
 				white: outlineWhite,
 				scaled: scaledImage
-			}
+			},
+			isWeapon: false
 		}
 
 		canvas._o = options;
@@ -521,7 +529,7 @@ const load = () => {
 		typeLabel.appendChild(typeDropdown);
 		badgeSettings.appendChild(typeLabel);
 
-		['None', 'Silver', 'Gold'].forEach(entry => {
+		['None', 'Weapon', 'Silver', 'Gold'].forEach(entry => {
 			const option = document.createElement('option');
 			typeDropdown.appendChild(option);
 			option.textContent = entry;
@@ -563,8 +571,9 @@ const load = () => {
 		
 
 		typeDropdown.onchange = () => {
-			options.gradient = [undefined, silver, gold][typeDropdown.selectedIndex];
+			options.gradient = [undefined, undefined, silver, gold][typeDropdown.selectedIndex];
 			brightnessSlider.disabled = contrastSlider.disabled = !typeDropdown.selectedIndex;
+			options.isWeapon = typeDropdown.selectedIndex === 1;
 
 			drawWithSettings(ctx, ctxBuffer, options);
 		}
