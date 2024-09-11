@@ -337,15 +337,15 @@ const load = () => {
 
 		// Loading in tags from param info.
 		// Name
-		if (params.get("n")) {
+		if (params.get("n") !== null) {
 			tag.name = decodeURIComponent(params.get("n"));
 		}
 		// ID
-		if (params.get("i")) {
+		if (params.get("i") !== null) {
 			tag.id = decodeURIComponent(params.get("i"));
 		}
 		// Title
-		if (params.get("t")) {
+		if (params.get("t") !== null) {
 			if (params.get("l")) {
 				const indexes = decodeURIComponent(params.get("t")).split(',');
 				const langTag = languageTags[params.get("l")];
