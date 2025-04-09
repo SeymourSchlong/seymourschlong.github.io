@@ -105,8 +105,12 @@ const load = () => {
 
 		const textFontList = ['Splat-text'];
 		if (lang[language].font) textFontList.push(lang[language].font[0]);
+		else textFontList.push("Kurokane");
+
 		const titleFontList = ['Splat-title'];
 		if (lang[language].font) titleFontList.push(lang[language].font[1]);
+		else titleFontList.push("Rowdy");
+
 		const textFont = textFontList.join(',');
 		const titleFont = titleFontList.join(',');
 
