@@ -16,7 +16,7 @@ const sunbreakUnlockConditions = ["Available from the beginning.","Reach master 
 sunbreakTitles = sunbreakTitles.map((title, index) => {
     return {
         name: title,
-        condition: sunbreakUnlockConditions[0] + ' (DLC)',
+        condition: sunbreakUnlockConditions[sunbreakUnlockCodes[index]] + ' (DLC)',
     }
 });
 
