@@ -440,6 +440,21 @@ const load = () => {
 
 		Object.assign(assetIDs, data.ids);
 
+		for (let i = 0; i < badges.length; i++) {
+			let item = badges[i].file;
+
+			if (item) {
+				if (item.startsWith("https://seymourschlong.github.io/hd/assets/badges/Badge_WeaponLevel_")) {
+					for (let L = 1; L <= 6; L++) {
+						i++;
+						let weaponLevel = {file: item};
+						weaponLevel.file = item.replace(/.$/, L);
+						badges.splice(i, 0, weaponLevel);
+					}
+				}
+			}
+		}
+
 		fetch(`https://splashtagmaker.com/lang.json`).then(res => {
 			return res.json();
 		}).then(data => {
