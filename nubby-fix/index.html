@@ -1,0 +1,25 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+        <title>Nubby Round 200 fixer</title>
+        <script type="text/javascript" src="main.js"></script>
+        <link rel="stylesheet" href="style.css">
+        <meta property="og:image" content="https://seymourschlong.github.io/nubby-fix/assets/images/ico.png">
+        <link rel="icon" href="assets/images/ico.png">
+    </head>
+    <body onload="load()">
+        <div id="main">
+            <div class="header">Nubby Round 200 Save Fixer</div>
+            <br>
+            <div id="upload-container">
+                <!-- button to upload save data -->
+                <input type="file" id="upload-save" accept=".save"> <input type="submit" value="Submit (Fix)" id="submit-save" disabled>
+            </div>
+            <div id="container" style="display: none;">
+                <a id="saveLink" download="NUBBY_AutoSave_F.save">
+                    <input type="button" id="saveButton" value="Download fixed save!">
+                </a>
+            </div>
+        </div>
+    </body>
+</html>
