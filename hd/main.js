@@ -163,7 +163,7 @@ const load = () => {
 			textCtx.clearRect(0, 0, tagWidth, tagHeight);
 			ctx.clearRect(0, 0, tagWidth, tagHeight);
 
-			if (tag.banner < 0 || tag.banner >= assetIDs.banners.length) {
+			if (tag.banner < 0 || tag.banner >= banners.length) {
 				// do nothing lol
 			} else if (customBgInput.files[0]) {
 				ctx.drawImage(customImages.banner, 0, 0, tagWidth, tagHeight);
