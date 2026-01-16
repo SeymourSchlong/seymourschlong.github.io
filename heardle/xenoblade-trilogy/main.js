@@ -19910,7 +19910,7 @@
             }),
             (0, on.jsx)(Fn, {
               children: (0, on.jsx)("p", {
-                children: "If there's any issues, you can find me on Twitter @spaghettitron",
+                children: "If there's any issues, you can find me on Twitter @spaghettitron, or on Bluesky @splashtagmaker.com",
               }),
             }),
             (0, on.jsx)(an, {
