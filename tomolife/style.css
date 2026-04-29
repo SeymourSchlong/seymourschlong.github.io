@@ -1,0 +1,138 @@
+body, input, select {
+    font-family: MS Gothic;
+}
+
+#main {
+    display: block;
+    margin: auto;
+    border: 1px solid black;
+    width: fit-content;
+    padding: 50px;
+    background-color: #ffe15b;
+}
+
+.scrollable {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+#main > div, #container > div {
+    margin: 10px;
+}
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+#container > div {
+    flex: 0 0 25%;
+    border: 2px inset gray;
+    padding: 20px;
+}
+
+#container .header {
+    border-bottom: 1px solid black;
+}
+
+label {
+    display: flex;
+    justify-content: space-between;
+    user-select: none;
+}
+
+input[type="checkbox"] {
+    vertical-align: bottom;
+}
+
+.header {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#disks label {
+    justify-content: flex-start;
+    flex: 0 0 50%;
+    text-align: left;
+
+    flex-direction: row-reverse;
+}
+
+#forms span {
+    flex: 0 0 50%;
+    text-align: left;
+    display: flex;
+    justify-content: flex-start;
+    user-select: none;
+    flex-direction: row-reverse;
+}
+
+#enemies label {
+    justify-content: space-around;
+    
+    justify-content: flex-start;
+    flex: 0 0 20%;
+    text-align: left;
+    display: flex;
+    user-select: none;
+
+    flex-direction: row-reverse;
+}
+
+#disks .scrollable, #forms .scrollable, #enemies .scrollable {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+
+label > span {
+    width: 7ch;
+    text-align: center;
+}
+
+
+#grid {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: calc(125px * 4 + 8px);
+    border: 1px solid black;
+
+    div {
+        width: 125px;
+        height: 125px;
+        border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+    }
+
+    .highlight {
+        outline: 2px solid white;
+        box-shadow: 0 0 4px white;
+        border-color: white;
+        z-index: 1;
+    }
+}
+
+
+#content {
+    display: flex;
+    gap: 60px;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+#marker {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid black;
+    box-shadow: 0 0 2px black;
+    background-color: whitesmoke;
+    position: absolute;
+    display: none;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+        <title>Tomodachi Life Personality Maker</title>
+        <script type="text/javascript" src="main.js"></script>
+        <link rel="stylesheet" href="style.css">
+        <meta property="og:image" content="https://seymourschlong.github.io/tomolife/assets/images/ico.png">
+        <link rel="icon" href="assets/images/ico.png">
+    </head>
+    <body onload="load()">
+        <div id="main">
+            <h1>Tomodachi Life Personality Maker</h1>
+            <br>
+            <div id="content">
+                <div id="chart">
+                    <!--Sweetie, Cheerleader, Charmer, Go-Getter -->
+                    <!--Buddy, Daydreamer, Merrymaker, Dynamo -->
+                    <!--Strategist, Perfectionist, Achiever, Visionary -->
+                    <!--Observer, Thinker, Rogue, Maverick-->
+                    <div id="grid">
+                        <div style="background-color: #fff3ab">Sweetie</div>
+                        <div style="background-color: #ffff39">Cheerleader</div>
+                        <div style="background-color: #ffa6c7">Charmer</div>
+                        <div style="background-color: #ff515c">Go-Getter</div>
+                        <div style="background-color: #ffe847">Buddy</div>
+                        <div style="background-color: #ffd070">Daydreamer</div>
+                        <div style="background-color: #ff9079">Merrymaker</div>
+                        <div style="background-color: #ff7b3a">Dynamo</div>
+                        <div style="background-color: #a5eb57">Strategist</div>
+                        <div style="background-color: #00daa7">Perfectionist</div>
+                        <div style="background-color: #7aefff">Achiever</div>
+                        <div style="background-color: #39acff">Visionary</div>
+                        <div style="background-color: #389a96">Observer</div>
+                        <div style="background-color: #1cb65f">Thinker</div>
+                        <div style="background-color: #6a7bff">Rogue</div>
+                        <div style="background-color: #a784ff">Maverick</div>
+                    </div>
+                    <div id="marker"></div>
+                </div>
+                <div id="meters">
+                    <datalist id="lines">
+                        <option value="0"></option>
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                        <option value="5"></option>
+                        <option value="6"></option>
+                        <option value="7"></option>
+                    </datalist>
+                    <!-- Movement, Speech, Energy, Thinking -->
+                    <h2>Movement</h2>
+                    <label><span>Slow</span> <input type="range" min="0" max="7" step="1" list="lines" id="movement"> <span>Quick</span></label>
+                    <h2>Speech</h2>
+                    <label><span>Polite</span> <input type="range" min="0" max="7" step="1" list="lines" id="speech"> <span>Honest</span></label>
+                    <h2>Energy</h2>
+                    <label><span>Flat</span> <input type="range" min="0" max="7" step="1" list="lines" id="energy"> <span>Varied</span></label>
+                    <h2>Thinking</h2>
+                    <label><span>Serious</span> <input type="range" min="0" max="7" step="1" list="lines" id="thinking"> <span>Chill</span></label>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
