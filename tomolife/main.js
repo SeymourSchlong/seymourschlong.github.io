@@ -12,9 +12,7 @@ const load = () => {
 
     const updateMarker = () => {
         let xValue = xSliders[0].valueAsNumber + xSliders[1].valueAsNumber;
-        if (xSliders[1].valueAsNumber > 3) xValue++;
         let yValue = ySliders[0].valueAsNumber + ySliders[1].valueAsNumber;
-        if (ySliders[1].valueAsNumber > 3) yValue++;
 
         yValue = 16 - yValue;
 
